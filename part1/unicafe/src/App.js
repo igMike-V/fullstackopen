@@ -15,18 +15,36 @@ const Statistics = (props) => {
   if (good === 0 && neutral === 0 && bad === 0){
     return <h4>No feedback given</h4>
   }
+  //TODO convert lines into compenent
   return(  
-    <>
-  <p>
-      good {good} <br /> 
-      neutral {neutral}<br />  
-      bad {bad} <br />
-      all {bad + neutral + good} <br />
-      average {((bad * -1) + (good * 1) ) / (bad + neutral + good)} <br />
-      positive {(good / (bad + neutral + good)) * 100} %
-    </p>
-    </>
+    <div>
+      
+      <StatisticLine text="good" values={props} />
+      <StatisticLine text="neutral" values={props} />
+      <StatisticLine text="bad" values={props} />
+      <StatisticLine text="all" values={props} />
+      <StatisticLine text="average" values={props} />
+      <StatisticLine text="positive" values={props} />
+    </div>
+
   ) 
+}
+
+//output Statistics depending on type
+const StatisticLine = (props) => {
+  let output = props.values[props.text]
+  if(props.text === 'all'){
+    output = props.values.good + props.values.neutral + props.values.bad
+  } else if( props.text === 'average'){
+    output = ((props.values.bad * -1) + (props.values.good * 1) ) / (props.values.bad + props.values.neutral + props.values.good)
+  } else if( props.text === 'positive'){
+    output = ((props.values.good / (props.values.bad + props.values.neutral + props.values.good)) * 100)
+  }
+  return(
+    <>
+    {props.text} {output} <br />
+    </>
+  )
 }
 
 
