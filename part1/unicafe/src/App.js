@@ -17,15 +17,16 @@ const Statistics = (props) => {
   }
   //TODO convert lines into compenent
   return(  
-    <div>
-      
+    <table>
+      <tbody>      
       <StatisticLine text="good" values={props} />
       <StatisticLine text="neutral" values={props} />
       <StatisticLine text="bad" values={props} />
       <StatisticLine text="all" values={props} />
       <StatisticLine text="average" values={props} />
       <StatisticLine text="positive" values={props} />
-    </div>
+      </tbody>
+    </table>
 
   ) 
 }
@@ -41,9 +42,10 @@ const StatisticLine = (props) => {
     output = ((props.values.good / (props.values.bad + props.values.neutral + props.values.good)) * 100)
   }
   return(
-    <>
-    {props.text} {output} <br />
-    </>
+    <tr>
+    <td>{props.text}</td>
+    <td>{output}</td>
+    </tr>
   )
 }
 
