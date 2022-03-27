@@ -20,13 +20,26 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
 
+  const [points, setVote] = useState(new Uint8Array(7))
+
   const updateSelected = (max) => {
-    setSelected(Math.floor(Math.random() * max))
-    console.log(selected)
+    const rndNum = Math.floor(Math.random() * max)
+    setSelected(rndNum)
   }
+
+  //update with vote button
+  const updateVote = (vote)=> {
+    const copy = { ...points }
+    copy[vote] += 1
+    setVote(copy);
+    console.log(copy)
+  }
+
   return (
     <div>
       <p>{anecdotes[selected]}</p>
+      <p>has {points[selected]} votes</p>
+      <Button text='vote' onClick={()=>updateVote(selected)} />
       <Button text='next anecdote' onClick={()=>updateSelected(7)} />
     </div>
   )
