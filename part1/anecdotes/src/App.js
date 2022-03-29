@@ -32,15 +32,31 @@ const App = () => {
     const copy = { ...points }
     copy[vote] += 1
     setVote(copy);
-    console.log(copy)
+  }
+
+  const getMax = () => {
+    const newPoints = { ...points }
+    let maxNum = 0
+    let maxKey = 0
+    for(var i=0; i < Object.keys(newPoints).length; i++){
+      if(maxNum < newPoints[i]){
+        maxNum = newPoints[i]
+        maxKey = i
+      }
+    }
+    return(maxKey)
   }
 
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <p>{anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
       <Button text='vote' onClick={()=>updateVote(selected)} />
       <Button text='next anecdote' onClick={()=>updateSelected(7)} />
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[getMax()]}</p>
+      <p>has {points[getMax()]} votes</p>
     </div>
   )
 }
