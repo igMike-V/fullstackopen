@@ -1,22 +1,7 @@
 import { useState } from 'react'
-
-//const Numbers = ({persons}) => persons.map(person => <Person key={person.name} person={person} />)
-
-const Numbers = ({persons, pfilter}) => {
-  if(pfilter){
-    let personsFiltered = persons.filter(p => p.name.toLowerCase().includes(pfilter.toLowerCase()))
-    if(personsFiltered.length > 0){
-      return(<>{personsFiltered.map(person => <Person key={person.name} person={person} />)}</>)
-    } else {
-      return(<>Sorry that filter returned no results.</>)
-    }
-  } else {
-    return (<>{persons.map(person => <Person key={person.name} person={person} />)} </>)
-  }
-}
-
-
-const Person = ({person}) => <p>{person.name} {person.number}</p>
+import Numbers from './components/numbers'
+import Filter from './components/filter'
+import PersonForm from './components/personform'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -49,22 +34,31 @@ const App = () => {
     }
   }
 
+  const formProperties = {
+    submitAction: addNumber,
+    buttonText: 'Add',
+    inputs:[
+    {
+      label: 'name',
+      value: newName,
+      onChange: handleNameChange,
+      id:1
+    },
+    {
+      label: 'number',
+      value: newNumber,
+      onChange: handleNumberChange,
+      id:2
+    }
+  ]}
+  
   return (
     <div>
-      <h1>Phonebook</h1>
-      filter shown with: <input value={filter} onChange={handleFilter} />
-      <h2>Add a new</h2>
-      <form onSubmit={addNumber}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-          <br />
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
+      <h2>Phonebook</h2>
+      <Filter value={filter} onChange={handleFilter} label='filter shown with:' />
+      <h3>Add a new</h3>
+      <PersonForm props={formProperties} /> 
+      <h3>Numbers</h3>
       <Numbers persons={persons} pfilter={filter} />
     </div>
     
