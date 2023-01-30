@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-//button compenent
+//button component
 const Button = ({ onClick, text }) => (
   <button onClick={onClick}>
     {text}
@@ -15,7 +15,7 @@ const Statistics = (props) => {
   if (good === 0 && neutral === 0 && bad === 0){
     return <h4>No feedback given</h4>
   }
-  //TODO convert lines into compenent
+  // convert lines into component
   return(  
     <table>
       <tbody>      
