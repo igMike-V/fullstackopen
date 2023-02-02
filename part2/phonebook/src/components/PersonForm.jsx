@@ -1,6 +1,6 @@
 import React from "react"
 
-const EntryForm = (props) => {
+const PersonForm = (props) => {
     const {handleNameChange, handleNumberChange, handleSubmit, newName, newNumber} = props
     return (
         <form>
@@ -17,4 +17,4 @@ const EntryForm = (props) => {
     )
 }
 
-export default EntryForm
+export default PersonForm
