@@ -1,6 +1,5 @@
 import React from "react"
-
-const Part = ({ name, exercises }) => <p>{name} {exercises}</p>
+import Part from "./Part"
 
 const Content = ({ parts }) => {
     const partContent = parts.map(part => <Part key={part.id} name={part.name} exercises={part.exercises}/>)
