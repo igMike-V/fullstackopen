@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import EntryForm from './components/EntryForm'
+import PersonForm from './components/PersonForm'
+import Filter from './components/Filter'
+import Persons from './components/Persons'
 
 const App = () => {
 
@@ -37,15 +39,6 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const directory = persons.filter(person => person.name.toLowerCase().match(filter.toLowerCase()))
-    .map(person => {
-      return (
-          <p className="person" key={person.name}>
-            {person.name} <span className="phone-number">{person.number}</span>
-          </p>
-      )
-    })
-
   const handleFilter = (event) => {
     setFilter(event.target.value)
   }
@@ -54,12 +47,14 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      filter shown with <input className="filter" onChange={handleFilter} value={filter} />
+      
+      <Filter handleFilter={handleFilter} filter={filter} />
+     
       <h2>Add a new entry</h2>
       
-      <EntryForm 
+      <PersonForm 
         handleNameChange={handleNameChange} 
-        handleNumberChange={handleNameChange} 
+        handleNumberChange={handleNumberChange} 
         newName={newName} 
         newNumber={newNumber}
         handleSubmit={handleSubmit}
@@ -67,7 +62,7 @@ const App = () => {
       
       <h2>Numbers</h2>
 
-      {directory}
+      <Persons persons={persons} filter={filter} />
 
     </div>
   )
