@@ -19,7 +19,7 @@ const App = () => {
       .then(res => {
         setPersons(res.data)
       })
-      .catch(res => console.error(res))
+      .catch((error) => console.error(error))
   }, [])
 
   // Submission of Person Form
