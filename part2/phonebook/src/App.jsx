@@ -16,6 +16,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
+  // Submission of Person Form
   const handleSubmit = (event) => {
     event.preventDefault()
     if(persons.find(person => person.name === newName)){
@@ -31,6 +32,7 @@ const App = () => {
     setNewNumber('')
   }
 
+  // Controlled inputs
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -47,7 +49,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      
+
       <Filter handleFilter={handleFilter} filter={filter} />
      
       <h2>Add a new entry</h2>
