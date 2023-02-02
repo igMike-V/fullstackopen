@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import EntryForm from './components/EntryForm'
 
 const App = () => {
 
@@ -55,17 +56,15 @@ const App = () => {
       <h1>Phonebook</h1>
       filter shown with <input className="filter" onChange={handleFilter} value={filter} />
       <h2>Add a new entry</h2>
-      <form>
-        <div>
-          name: <input onChange={handleNameChange} value={newName} />
-        </div>
-        <div>
-          number: <input onChange={handleNumberChange} value={newNumber} />
-        </div>
-        <div>
-          <button onClick={handleSubmit} type="submit">add</button>
-        </div>
-      </form>
+      
+      <EntryForm 
+        handleNameChange={handleNameChange} 
+        handleNumberChange={handleNameChange} 
+        newName={newName} 
+        newNumber={newNumber}
+        handleSubmit={handleSubmit}
+      />
+      
       <h2>Numbers</h2>
 
       {directory}
