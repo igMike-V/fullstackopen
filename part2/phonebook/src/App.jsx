@@ -3,6 +3,7 @@ import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Notifications from './components/Notifications'
 
 const App = () => {
 
@@ -11,6 +12,10 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState({
+    isError: false,
+    text: null,
+  })
 
   // Load persons from server
   useEffect(() => {
@@ -22,12 +27,35 @@ const App = () => {
       .catch(error => console.log('problem communicating with the server: ', error ))
   }, [])
 
+  // Clean up message
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNotification({isError: false, text: null})
+    }, 3000)
+  }, [notification])
+
+  // Set Notification messages
+  const setMessage = message => {
+    setNotification({
+      isError: false,
+      text: message,
+    })
+  }
+
+  // Set Error Message
+  const setError = message => {
+    setNotification({
+      isError: true,
+      text: message,
+    })
+  }
+
   // Submission of Person Form
   const handleSubmit = (event) => {
     event.preventDefault()
     // Extract person from state if they exist
     const existingPerson = persons.find(person => person.name === newName)
-
     // Make a new person object to add or update in the server
     const newPerson = {
       name: newName,
@@ -43,6 +71,7 @@ const App = () => {
             setPersons(persons.map(person => {
               return person.id === updatedPerson.id ? updatedPerson : person
             }))
+            setMessage(`Updated Phone number for: ${updatedPerson.name}`)
           })
       }
 
@@ -52,6 +81,7 @@ const App = () => {
         .create(newPerson)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setMessage(`Added ${returnedPerson.name}`)
         })
         .catch(error => console.log('could not add person to server: ', error ))
     }
@@ -85,8 +115,10 @@ const App = () => {
 
 
   return (
-    <div>
+    <div >
       <h1>Phonebook</h1>
+      <Notifications message={notification.text} isError={notification.isError} />
+  
 
       <Filter handleFilter={handleFilter} filter={filter} />
      
