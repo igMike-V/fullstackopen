@@ -25,14 +25,29 @@ const App = () => {
   // Submission of Person Form
   const handleSubmit = (event) => {
     event.preventDefault()
-    if(persons.find(person => person.name === newName)){
-      alert(`${newName} is already added to phonebook`)
-      console.log(newName)
-    } else {
-      const newPerson = {
-        name: newName,
-        number: newNumber,
+    // Extract person from state if they exist
+    const existingPerson = persons.find(person => person.name === newName)
+
+    // Make a new person object to add or update in the server
+    const newPerson = {
+      name: newName,
+      number: newNumber,
+    }
+
+    // Check state for existing person to determine if we need to update or add to server
+    if(existingPerson){
+      // Person is already in the phone book we should ask if user wants to update
+      if (window.confirm(`${newName} is already added the phone book, Replace the old Number with a new one?`)) {
+        personService.update(existingPerson.id, newPerson)
+          .then(updatedPerson => {
+            setPersons(persons.map(person => {
+              return person.id === updatedPerson.id ? updatedPerson : person
+            }))
+          })
       }
+
+    } else {
+      // Person is not in the phone book we are safe to add an new entry
       personService 
         .create(newPerson)
         .then(returnedPerson => {
