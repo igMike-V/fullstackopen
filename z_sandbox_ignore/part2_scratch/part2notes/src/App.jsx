@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
 import noteService from './services/notes'
 
 import Note from './components/Note'
@@ -10,18 +9,17 @@ const App = () => {
   const [newNote, setNewNote] = useState('a new note...')
   const [showAll, setShowAll] = useState(true)
 
+  const notesToShow = showAll ? notes : notes.filter(note => note.important)
+
+  // get all notes on load
   useEffect(()=>{
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/notes')
-      .then(res => {
-        console.log('promise fulfilled')
-        setNotes(res.data)
+    noteService
+      .getAll()
+      .then(initalNotes => {
+        setNotes(initalNotes)
       })
   }, [])
   console.log('render', notes.length, 'notes')
-
-  const notesToShow = showAll ? notes : notes.filter(note => note.important)
   
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
@@ -33,23 +31,28 @@ const App = () => {
       content: newNote,
       important: Math.random() < 0.5,
     }
-  
-    axios
-      .post('http://localhost:3001/notes', noteObject)
-      .then(response => {
-        setNotes(notes.concat(response.data))
+    
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
         setNewNote('')
       })
   }
 
   const toggleImportanceOf = (id) => {
-    console.log('importance of ' + id + ' needs to be toggled')
-    const url = `http://localhost:3001/notes/${id}`
     const note = notes.find(n => n.id === id)
     const changedNote = { ...note, important: !note.important }
 
-    axios.put(url, changedNote).then(response => {
-      setNotes(notes.map(n => n.id !== id ? n : response.data))
+    noteService
+    .update(id, changedNote).then(returnedNote => {
+      setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+    })
+    .catch(error => {
+      alert(
+        `the note '${note.content}' was already deleted from the server`
+      )
+      setNotes(notes.filter(n => n.id !== id))
     })
   }
 
