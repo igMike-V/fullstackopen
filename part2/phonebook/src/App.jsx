@@ -45,6 +45,16 @@ const App = () => {
     setNewNumber('')
   }
 
+  const handleDelete = id => {
+    if (window.confirm(`Are you sure you want to delete ${persons.find(person => person.id === id).name} `)){
+      personService
+        .deleteEntry(id)
+        .then(req => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  }
+
   // Controlled inputs
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -77,7 +87,7 @@ const App = () => {
       
       <h2>Numbers</h2>
 
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} handleDelete={handleDelete} />
 
     </div>
   )
