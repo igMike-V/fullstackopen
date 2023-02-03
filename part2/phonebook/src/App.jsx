@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
+import personService from './services/persons'
 
 const App = () => {
 
@@ -14,12 +14,12 @@ const App = () => {
 
   // Load persons from server
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(res => {
-        setPersons(res.data)
+    personService
+      .getAll()
+      .then(personList => {
+        setPersons(personList)
       })
-      .catch((error) => console.error(error))
+      .catch(error => console.log('problem communicating with the server: ', error ))
   }, [])
 
   // Submission of Person Form
@@ -29,11 +29,18 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
       console.log(newName)
     } else {
-      setPersons(persons.concat({
+      const newPerson = {
         name: newName,
         number: newNumber,
-      }))
+      }
+      personService 
+        .create(newPerson)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+        })
+        .catch(error => console.log('could not add person to server: ', error ))
     }
+    
     setNewName('')
     setNewNumber('')
   }
