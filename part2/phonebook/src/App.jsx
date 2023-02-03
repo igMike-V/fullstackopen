@@ -32,7 +32,7 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => {
       setNotification({isError: false, text: null})
-    }, 3000)
+    }, 4000)
   }, [notification])
 
   // Set Notification messages
@@ -73,6 +73,10 @@ const App = () => {
             }))
             setMessage(`Updated Phone number for: ${updatedPerson.name}`)
           })
+          .catch(error => {
+            console.log('could not edit person in server: ', error )
+            setError(`${newPerson.name} has already been deleted from server.`)
+          })
       }
 
     } else {
@@ -83,7 +87,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setMessage(`Added ${returnedPerson.name}`)
         })
-        .catch(error => console.log('could not add person to server: ', error ))
+        .catch(error => {
+          console.log('could not add person to server: ', error )
+          setError(`${newPerson.name} Could not be added to the server. Try again later.`)
+        })
     }
     
     setNewName('')
@@ -91,10 +98,16 @@ const App = () => {
   }
 
   const handleDelete = id => {
-    if (window.confirm(`Are you sure you want to delete ${persons.find(person => person.id === id).name} `)){
+    const personName = persons.find(person => person.id === id).name
+    if (window.confirm(`Are you sure you want to delete ${personName} `)){
       personService
         .deleteEntry(id)
         .then(req => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+        .catch(error => {
+          console.log('Error Deleting Entry', error)
+          setError(`Information for ${personName} was already removed from the server.`)
           setPersons(persons.filter(person => person.id !== id))
         })
     }

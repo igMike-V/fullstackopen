@@ -22,8 +22,6 @@ const update = (id, newEntry) => {
 const deleteEntry = id => {
     const request = axios.delete(`${baseUrl}/${id}`)
         return(request)
-        .catch(error => console.error('There was an error!', error))
-
 }
 
 export default { getAll, create, update, deleteEntry }
