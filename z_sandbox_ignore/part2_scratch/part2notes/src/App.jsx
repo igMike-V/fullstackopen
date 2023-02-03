@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import noteService from './services/notes'
+import Notification from './components/Notification'
 
 import Note from './components/Note'
 
@@ -8,6 +9,7 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('a new note...')
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('some error happened...')
 
   const notesToShow = showAll ? notes : notes.filter(note => note.important)
 
@@ -19,7 +21,6 @@ const App = () => {
         setNotes(initalNotes)
       })
   }, [])
-  console.log('render', notes.length, 'notes')
   
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
@@ -49,16 +50,15 @@ const App = () => {
       setNotes(notes.map(note => note.id !== id ? note : returnedNote))
     })
     .catch(error => {
-      alert(
-        `the note '${note.content}' was already deleted from the server`
-      )
+      setErrorMessage(`Note '${note.content}' was already removed from the server`)
       setNotes(notes.filter(n => n.id !== id))
     })
   }
 
   return (
-    <div>
+    <div className='App'>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           Show {showAll ? 'important' : 'all'}
