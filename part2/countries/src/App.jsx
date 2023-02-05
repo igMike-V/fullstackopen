@@ -1,32 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import './App.css'
+import CountryDetails from './components/CountryDetails'
+import SearchResults from './components/SearchResults'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // State declaration
+  const [countries, setCountries] = useState([])
+  const [searchResults, setSearchResults] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState(null)
+  const [countryFound, setCountryFound] = useState(false)
 
+  // Controlled Form
+  const [search, setSearch] = useState('')
+
+  // Get countries from API
+  useEffect(() => {
+    const baseUrl = 'https://restcountries.com/v3.1'
+    axios
+      .get(`${baseUrl}/all`)
+      .then(res => {
+        setCountries(res.data)
+      })
+      .catch(error => error(error))
+  }, [])
+
+  const countryLookup = Object.keys(countries).map(key => ({id: key, name: countries[key].name.common.toLowerCase()}))
+  const searchDisplay = searchResults.map(country => <p className='search-result' key={country.id}>{country.name}</p>)
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value)
+   
+  }
+
+  useEffect(()=>{
+    filterResults()
+  }, [search])
+
+  useEffect(()=>{
+    if(searchResults.length === 1){
+      setSelectedCountry(countries[searchResults[0].id])
+      setCountryFound(true)
+    } else {
+      setSelectedCountry(null)
+      setCountryFound(false)
+    }
+  }, [searchResults])
+
+  const filterResults = () => {
+    const matchedCountries = countryLookup.filter(country => country.name.match(search.toLowerCase()))
+    const newSearchResults = matchedCountries.map(match => ({id: match.id, name: countries[match.id].name.common}))
+    setSearchResults(newSearchResults)
+  }
+
+  
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="search">
+        Find countries: <input onChange={handleSearchChange} value={search}></input>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {!countryFound && <SearchResults searchDisplay={searchDisplay} />} 
+      {countryFound && <CountryDetails country={selectedCountry} />}
     </div>
   )
 }
