@@ -1,8 +1,9 @@
 import React from "react"
 import Languages from "./Languages"
+import Weather from "./Weather"
 
 
-const CountryDetails = ({ country }) => {
+const CountryDetails = ({ country, weatherData }) => {
     return (
         <div className="country">
             <section className="name">
@@ -18,6 +19,7 @@ const CountryDetails = ({ country }) => {
             <section className="flag">
                 <img src={country.flags.svg} alt={country.flags.alt} />
             </section>
+            <Weather weatherData={weatherData} countryName={country.name.common} />
         </div>
     )
 }

@@ -92,3 +92,18 @@
   width: 100%;
   box-shadow: 1px 1px 6px #000000aa;
 }
+
+.weather-data {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: solid black 1px;
+  background-color: rgb(243, 243, 243);
+}
+
+.weather-temp {
+  font-weight: 800;
+  font-size: 2em;
+  color: rgb(53, 53, 53);
+}
+
