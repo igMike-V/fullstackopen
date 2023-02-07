@@ -10,7 +10,8 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('a new note...')
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorSet, setErrorSet] = useState(false)
 
   const notesToShow = showAll ? notes : notes.filter(note => note.important)
 
@@ -22,6 +23,17 @@ const App = () => {
         setNotes(initalNotes)
       })
   }, [])
+
+  //get rid of errors after 5 seconds
+
+  useEffect(() => {
+    if(errorSet){
+      setTimeout(() => {
+        setErrorSet(false)
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }, [errorSet])
   
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
@@ -52,6 +64,7 @@ const App = () => {
     })
     .catch(error => {
       setErrorMessage(`Note '${note.content}' was already removed from the server`)
+      setErrorSet(true)
       setNotes(notes.filter(n => n.id !== id))
     })
   }
