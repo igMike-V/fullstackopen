@@ -25,7 +25,6 @@ const App = () => {
   }, [])
 
   //get rid of errors after 5 seconds
-
   useEffect(() => {
     if(errorSet){
       setTimeout(() => {
