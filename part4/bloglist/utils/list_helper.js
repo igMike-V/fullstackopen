@@ -21,4 +21,34 @@ const favoriteBlog = (blogs) => {
   }
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog }
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) {
+    return false
+  }
+  let blogStats = []
+  blogs.forEach(blog => {
+    let setKey = -1
+    for(let i = 0; i < blogStats.length; i++){
+      if (blogStats[i].author === blog.author){
+        setKey = i
+      }
+    }
+    if (setKey === -1){
+      // not found
+      blogStats.push({ author: blog.author, blogs: 1 })
+    } else {
+      blogStats[setKey].blogs ++
+    }
+  })
+  // Find the highest number of blogs among array objects
+  const returnBlog = blogStats.reduce((prev, next) => {
+    if (next.blogs > prev.blogs){
+      return next
+    } else {
+      return prev
+    }
+  }, blogStats[0])
+  return returnBlog
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
