@@ -4,9 +4,9 @@ Content-Type: application/json
 
 {
     "author": "Mike Vautour",
-    "title": "Mediocre Blog",
-    "url": "https://worldsokayestblog.com",
-    "upvotes": 1
+    "title": "Crap blog",
+    "url": "https://absolutecrapblog.com",
+    "likes": 1
 }
 
 ### GET
