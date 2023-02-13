@@ -22,10 +22,12 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
+  // Return false if empty array
   if (blogs.length === 0) {
     return false
   }
   let blogStats = []
+  // Create an array of blog authors with total blogs each
   blogs.forEach(blog => {
     let setKey = -1
     for(let i = 0; i < blogStats.length; i++){
@@ -33,10 +35,12 @@ const mostBlogs = (blogs) => {
         setKey = i
       }
     }
+    // Check if author was found (!= -1)
     if (setKey === -1){
-      // not found
+      // Not found, push to array
       blogStats.push({ author: blog.author, blogs: 1 })
     } else {
+      // Author was in array, increment blogs
       blogStats[setKey].blogs ++
     }
   })
@@ -51,4 +55,40 @@ const mostBlogs = (blogs) => {
   return returnBlog
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return false
+  }
+
+  let blogStats = []
+  // Create an array of blog authors with total blogs each
+  blogs.forEach(blog => {
+    let setKey = -1
+    for(let i = 0; i < blogStats.length; i++){
+      if (blogStats[i].author === blog.author){
+        setKey = i
+      }
+    }
+    // Check if author was found (!= -1)
+    if (setKey === -1){
+      // Not found, push to array
+      blogStats.push({ author: blog.author, likes: blog.likes })
+    } else {
+      // Author was in array, increment blogs
+      blogStats[setKey].likes += blog.likes
+    }
+  })
+  // Find the highest number of blogs among array objects
+  const returnBlog = blogStats.reduce((prev, next) => {
+    if (next.likes > prev.likes){
+      return next
+    } else {
+      return prev
+    }
+  }, blogStats[0])
+  return returnBlog
+
+
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }
