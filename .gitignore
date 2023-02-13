@@ -6,6 +6,7 @@
 
 # ENV files
 *.local
+.env
 
 # testing
 **/coverage

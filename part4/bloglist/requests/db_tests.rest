@@ -1,0 +1,17 @@
+### POST
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "author": "Mike Vautour",
+    "title": "Mediocre Blog",
+    "url": "https://worldsokayestblog.com",
+    "upvotes": 1
+}
+
+### GET
+GET http://localhost:3003/api/blogs
+
+
+### GET One
+GET http://localhost:3003/api/blogs/63ea721e6659f9311a09de59
