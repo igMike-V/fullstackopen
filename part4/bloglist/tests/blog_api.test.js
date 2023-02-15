@@ -34,9 +34,7 @@ test('unique identifier is named "id"', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
-
-
-describe('Validating POST data', () => {
+describe('Adding Blogs to the database', () => {
 
   test('making an HTTP POST request creates a new blog post', async () => {
     const newBlog = {
@@ -94,6 +92,28 @@ describe('Validating POST data', () => {
       .post('/api/blogs')
       .send(newBlog)
       .expect(400)
+  })
+
+})
+
+describe('Deleting a blog from the database', () => {
+
+  test('succeeds with status code of 204 if id valid', async () => {
+    const blogsAtStart = await helper.blogsInDB()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDB()
+
+    // make sure something was deleted
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+    // ensure blog to be deleted was the one deleted
+    const blogTitles = blogsAtEnd.map(blog => blog.title)
+    expect(blogTitles).not.toContain(blogToDelete.title)
   })
 
 })
