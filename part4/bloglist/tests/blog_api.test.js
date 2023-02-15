@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const app = require('../app')
 const api = supertest(app)
 
-const Blog = require('../models/blog')
+//const Blog = require('../models/blog')
 
 test('list is returned as json', async () => {
   await api
@@ -14,7 +14,6 @@ test('list is returned as json', async () => {
 
 test('number of items returned is one', async () => {
   const response = await api.get('/api/blogs')
-  console.log(response.body)
   expect(response.body).toHaveLength(1)
 })
 
