@@ -12,6 +12,12 @@ test('list is returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
+test('number of items returned is one', async () => {
+  const response = await api.get('/api/blogs')
+  console.log(response.body)
+  expect(response.body).toHaveLength(1)
+})
+
 
 afterAll(async () => {
   await mongoose.connection.close()
