@@ -40,20 +40,22 @@ test('making an HTTP POST request creates a new blog post', async () => {
     title: 'fake blog',
     url: 'https://testblog.com'
   }
-
+  // Check for correct response from DB
   await api
     .post('/api/blogs')
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
+  // Check if a new object was added to the database
   const blogsAtEnd = await helper.blogsInDB()
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
-
+  // check if new saved note url exists
   const urlValue = blogsAtEnd.map(blog => blog.url)
   expect(urlValue).toContain('https://testblog.com')
 })
 
+// Close connection
 afterAll(async () => {
   await mongoose.connection.close()
 })
