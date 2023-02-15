@@ -13,8 +13,13 @@ test('list is returned as json', async () => {
 })
 
 test('number of items returned is one', async () => {
-  const response = await api.get('/api/blogs')
+  const response = await api.get('/api/blogs/')
   expect(response.body).toHaveLength(1)
+})
+
+test.only('unique identifier is named "id"', async () => {
+  const response = await api.get('/api/blogs/63eceac08eeb3238ec5c36c8')
+  expect(response.body.id).toBeDefined()
 })
 
 
