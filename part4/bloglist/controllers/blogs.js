@@ -1,5 +1,5 @@
 const blogsRouter = require('express').Router()
-const { response } = require('../app')
+//const { response } = require('../app')
 const Blog = require('../models/blog')
 
 // Get all posts
