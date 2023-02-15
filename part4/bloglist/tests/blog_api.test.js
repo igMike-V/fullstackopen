@@ -55,6 +55,22 @@ test('making an HTTP POST request creates a new blog post', async () => {
   expect(urlValue).toContain('https://testblog.com')
 })
 
+test.only('new blogs likes value initialize to zero', async () => {
+  const newBlog = {
+    author: 'new author',
+    title: 'new blog',
+    url: 'https://newblog.com',
+  }
+  // Check for correct response from DB
+  const postTest = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  expect(postTest.body.likes).toBe(0)
+})
+
+
 // Close connection
 afterAll(async () => {
   await mongoose.connection.close()
