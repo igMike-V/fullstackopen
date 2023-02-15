@@ -1,14 +1,12 @@
+const config = require('./utils/config')
 const mongoose = require('mongoose')
 
-if (process.argv.length<3) {
+/* if (process.argv.length<3) {
   console.log('give password as argument')
   process.exit(1)
-}
+} */
 
-const password = process.argv[2]
-
-const url =
-  `mongodb+srv://fullstack:${password}@cluster0.o1opl.mongodb.net/?retryWrites=true&w=majority`
+const url = config.TESTDB
 
 mongoose.set('strictQuery',false)
 mongoose.connect(url)
@@ -22,17 +20,17 @@ const noteSchema = new mongoose.Schema({
 const Note = mongoose.model('Note', noteSchema)
 
 const note = new Note({
-  content: 'Mongoose makes things easy',
+  content: 'Third Note',
   date: new Date(),
-  important: true,
+  important: false,
 })
 
-/*
+
 note.save().then(result => {
   console.log('note saved!')
   mongoose.connection.close()
 })
-*/
+
 
 Note.find({}).then(result => {
   result.forEach(note => {
