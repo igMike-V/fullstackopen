@@ -34,40 +34,68 @@ test('unique identifier is named "id"', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
-test('making an HTTP POST request creates a new blog post', async () => {
-  const newBlog = {
-    author: 'Joe Shmoe',
-    title: 'fake blog',
-    url: 'https://testblog.com'
-  }
-  // Check for correct response from DB
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
 
-  // Check if a new object was added to the database
-  const blogsAtEnd = await helper.blogsInDB()
-  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
-  // check if new saved note url exists
-  const urlValue = blogsAtEnd.map(blog => blog.url)
-  expect(urlValue).toContain('https://testblog.com')
-})
 
-test.only('new blogs likes value initialize to zero', async () => {
-  const newBlog = {
-    author: 'new author',
-    title: 'new blog',
-    url: 'https://newblog.com',
-  }
-  // Check for correct response from DB
-  const postTest = await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-  expect(postTest.body.likes).toBe(0)
+describe('Validating POST data', () => {
+
+  test('making an HTTP POST request creates a new blog post', async () => {
+    const newBlog = {
+      author: 'Joe Shmoe',
+      title: 'fake blog',
+      url: 'https://testblog.com'
+    }
+    // Check for correct response from DB
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    // Check if a new object was added to the database
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+    // check if new saved note url exists
+    const urlValue = blogsAtEnd.map(blog => blog.url)
+    expect(urlValue).toContain('https://testblog.com')
+  })
+
+  test('new blogs likes value initialize to zero', async () => {
+    const newBlog = {
+      author: 'new author',
+      title: 'new blog',
+      url: 'https://newblog.com'
+    }
+    // Check for correct response from DB
+    const postTest = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    expect(postTest.body.likes).toBe(0)
+  })
+
+  test('new post fails if title is missing', async () => {
+    const newBlog = {
+      author: 'new author',
+      url: 'https://newblog.com'
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
+  test('new post fails if url is missing', async () => {
+    const newBlog = {
+      author: 'new author',
+      title: 'new blog'
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
 })
 
 

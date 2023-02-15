@@ -11,15 +11,19 @@ blogsRouter.get('/', async (request, response) => {
 // Add a new post
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: 0
-  })
+  if (!body.title || !body.author || !body.url) {
+    response.status(400).end()
+  } else {
+    const blog = new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: 0
+    })
 
-  const savedBlog = await blog.save()
-  response.status(201).json(savedBlog)
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog)
+  }
 })
 
 blogsRouter.get('/:id', async (request, response) => {
