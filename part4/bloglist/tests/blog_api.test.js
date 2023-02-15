@@ -118,6 +118,22 @@ describe('Deleting a blog from the database', () => {
 
 })
 
+describe('updating notes', () => {
+  test.only('adds a like', async () => {
+    const TEST_INDEX = 1
+    const blogsAtStart = await helper.blogsInDB()
+    const blogToUpdate = blogsAtStart[TEST_INDEX]
+    const updatedLikes = blogToUpdate.likes + 1
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: updatedLikes })
+      .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd[TEST_INDEX].likes).toBe(blogToUpdate.likes + 1)
+    console.log(blogsAtEnd)
+  })
+})
 
 // Close connection
 afterAll(async () => {
