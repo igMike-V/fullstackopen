@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impha2UiLCJpZCI6IjYzZWQzNmEzYTZhMGY3NjEyMTYwMTFlOCIsImlhdCI6MTY3NjU1OTg4Nn0.7HTu1kT3bo_LHbUny2a2g8uMXXFzIWsaTpEsfelcHVo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impha2UiLCJpZCI6IjYzZWQzNmEzYTZhMGY3NjEyMTYwMTFlOCIsImlhdCI6MTY3NjU2MDQzNn0.g8_Ac4_XxnzZ-3EBH7uoLbTWL_eSvM86xtNnbedfEHs
 
 {
     "content": "Note created with authorized user",
-    "important": true,
+    "important": true
 }
 
 ### update notes

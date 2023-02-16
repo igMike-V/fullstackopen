@@ -3,10 +3,10 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "author": "Mike Vautour",
-    "title": "Crap blog",
-    "url": "https://absolutecrapblog.com",
-    "likes": 1
+    "author": "Ryan Harper",
+    "title": "The immediate reaction",
+    "url": "https://tirexample.com",
+    "userId": "63ee836168050c8a231d5044"
 }
 
 ### GET
