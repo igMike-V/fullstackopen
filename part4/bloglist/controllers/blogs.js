@@ -1,19 +1,17 @@
 const blogsRouter = require('express').Router()
-const { response } = require('../app')
-//const { response } = require('../app')
 const Blog = require('../models/blog')
 
 // Get all posts
-blogsRouter.get('/', async (request, response) => {
+blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({})
-  response.json(blogs)
+  res.json(blogs)
 })
 
 // Add a new post
-blogsRouter.post('/', async (request, response) => {
-  const body = request.body
+blogsRouter.post('/', async (req, res) => {
+  const body = req.body
   if (!body.title || !body.author || !body.url) {
-    response.status(400).end()
+    res.status(400).end()
   } else {
     const blog = new Blog({
       title: body.title,
@@ -23,34 +21,34 @@ blogsRouter.post('/', async (request, response) => {
     })
 
     const savedBlog = await blog.save()
-    response.status(201).json(savedBlog)
+    res.status(201).json(savedBlog)
   }
 })
 
-blogsRouter.get('/:id', async (request, response) => {
-  const blog = await Blog.findById(request.params.id)
+blogsRouter.get('/:id', async (req, res) => {
+  const blog = await Blog.findById(req.params.id)
   if (blog) {
-    response.json(blog)
+    res.json(blog)
   } else {
-    response.status(404).end()
+    res.status(404).end()
   }
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndDelete(request.params.id)
-  response.status(204).end()
+blogsRouter.delete('/:id', async (req, res) => {
+  await Blog.findByIdAndDelete(req.params.id)
+  res.status(204).end()
 })
 
 // Add like
-blogsRouter.put('/:id', async (request, response) => {
-  const body = request.body
+blogsRouter.put('/:id', async (req, res) => {
+  const body = req.body
 
   const blog = {
     likes: body.likes
   }
 
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-  response.json(updatedBlog)
+  const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, { new: true })
+  res.json(updatedBlog)
 
 })
 
