@@ -1,0 +1,17 @@
+### Working login
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "jake",
+    "password": "horriblepassword"
+}
+
+### Invalid Login
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "jake",
+    "password": "notthepassword"
+}

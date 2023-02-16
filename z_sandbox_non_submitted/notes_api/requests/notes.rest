@@ -1,0 +1,31 @@
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impha2UiLCJpZCI6IjYzZWQzNmEzYTZhMGY3NjEyMTYwMTFlOCIsImlhdCI6MTY3NjU1OTg4Nn0.7HTu1kT3bo_LHbUny2a2g8uMXXFzIWsaTpEsfelcHVo
+
+{
+    "content": "Note created with authorized user",
+    "important": true,
+}
+
+### update notes
+PUT http://localhost:3001/api/notes/63e4e2841d9790ef84e8ed5a
+Content-Type: application/json
+
+{
+    "content": "UddddddT",
+    "important": false
+}
+
+### Get all notes
+GET http://localhost:3001/api/notes
+
+
+### GET one note
+GET http://localhost:3001/api/notes/63e3e27b6633158da39639a7
+
+### GET one note ERROR MALFORMED ID
+GET http://localhost:3001/api/notes/63e3e27b656439639a7
+
+
+### DELETE a note
+DELETE http://localhost:3001/api/notes/63e52b14cc82e75c7a5454de
