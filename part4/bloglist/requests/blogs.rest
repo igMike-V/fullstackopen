@@ -1,12 +1,11 @@
 ### POST
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-
+Authorization: 
 {
-    "author": "Ryan Harper",
-    "title": "The immediate reaction",
-    "url": "https://tirexample.com",
-    "userId": "63ee836168050c8a231d5044"
+    "author": "joe gain",
+    "title": "another blog",
+    "url": "https://tirexample.com"
 }
 
 ### GET
