@@ -1,11 +1,12 @@
 ### POST
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1pa2VWIiwiaWQiOiI2M2VlODM2MTY4MDUwYzhhMjMxZDUwNDQiLCJpYXQiOjE2NzY2NDQ3Mzd9.Xgc1unNJBRwuIggW85YK9yynLUCdU22JGeIEhMwPnMk
+
 {
-    "author": "joe gain",
-    "title": "another blog",
-    "url": "https://tirexample.com"
+    "author": "Janet Strange",
+    "title": "of things not tried",
+    "url": "https://falalala.com"
 }
 
 ### GET
