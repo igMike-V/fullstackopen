@@ -3,16 +3,37 @@ const mongoose = require('mongoose')
 const app = require('../app')
 const api = supertest(app)
 const helper = require('./blog_api_test_helper')
-
 const Blog = require('../models/blog')
-
+const User = require('../models/user')
+// userToken gets set in the beforeEach Function
+let userToken = ''
 // initialize db with dummy blogs
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
+  // Create a user
+  const newUser = {
+    username: 'testuser',
+    password: 'password'
+  }
+  await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  // Login new user to get token
+
+  const loginResponse = await api
+    .post('/api/login')
+    .send(newUser)
+
+  userToken = loginResponse.body.token
 
   for (let blog of helper.initialBlogs) {
-    let blogObject = new Blog(blog)
-    await blogObject.save()
+    await api
+      .post('/api/blogs')
+      .set('authorization', 'Bearer ' + userToken)
+      .send(blog)
   }
 })
 
@@ -37,6 +58,8 @@ test('unique identifier is named "id"', async () => {
 describe('Adding Blogs to the database', () => {
 
   test('making an HTTP POST request creates a new blog post', async () => {
+    // Create a user
+
     const newBlog = {
       author: 'Joe Shmoe',
       title: 'fake blog',
@@ -45,6 +68,7 @@ describe('Adding Blogs to the database', () => {
     // Check for correct response from DB
     await api
       .post('/api/blogs')
+      .set('authorization', 'Bearer ' + userToken)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -57,7 +81,27 @@ describe('Adding Blogs to the database', () => {
     expect(urlValue).toContain('https://testblog.com')
   })
 
+  test('adding a blog fails with the proper status code 401 Unauthorized if a token is not provided', async () => {
+    // Create a user
+    const newBlog = {
+      author: 'Joe Shmoe',
+      title: 'fake blog',
+      url: 'https://testblog.com'
+    }
+    // Check for correct response from DB
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+
+    // Make sure no blog was added to the database
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+
   test('new blogs likes value initialize to zero', async () => {
+
     const newBlog = {
       author: 'new author',
       title: 'new blog',
@@ -66,6 +110,7 @@ describe('Adding Blogs to the database', () => {
     // Check for correct response from DB
     const postTest = await api
       .post('/api/blogs')
+      .set('authorization', 'Bearer ' + userToken)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -79,6 +124,7 @@ describe('Adding Blogs to the database', () => {
     }
     await api
       .post('/api/blogs')
+      .set('authorization', 'Bearer ' + userToken)
       .send(newBlog)
       .expect(400)
   })
@@ -90,6 +136,7 @@ describe('Adding Blogs to the database', () => {
     }
     await api
       .post('/api/blogs')
+      .set('authorization', 'Bearer ' + userToken)
       .send(newBlog)
       .expect(400)
   })
@@ -104,11 +151,12 @@ describe('Deleting a blog from the database', () => {
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('authorization', 'Bearer ' + userToken)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDB()
 
-    // make sure something was deleted
+    //make sure something was deleted
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
 
     // ensure blog to be deleted was the one deleted
@@ -118,8 +166,8 @@ describe('Deleting a blog from the database', () => {
 
 })
 
-describe('updating notes', () => {
-  test.only('adds a like', async () => {
+describe('updating blog', () => {
+  test('adds a like', async () => {
     const TEST_INDEX = 1
     const blogsAtStart = await helper.blogsInDB()
     const blogToUpdate = blogsAtStart[TEST_INDEX]

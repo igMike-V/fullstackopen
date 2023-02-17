@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const jwt = require('jsonwebtoken')
 
 
 // Get all posts
@@ -13,6 +14,8 @@ blogsRouter.post('/', async (req, res) => {
   const body = req.body
   if (!body.title || !body.author || !body.url) {
     res.status(400).end()
+  } else if(!(req.get('authorization'))){
+    res.status(401).json({ error: 'Unauthorized' })
   } else {
     // Get user from authenticated token
     const user = req.user
