@@ -1,27 +1,14 @@
-import React, {useState} from "react"
-import loginService from '../services/login.js'
-import blogService from '../services/blogs.js'
+import React, {useState} from 'react'
+import loginService from '../services/login'
+import blogService from '../services/blogs'
+import formService from '../utilities/forms'
 
 const LoginForm = ({setUser}) => {
-  //make login form
+  // State for controlled form elements
   const [userForm, setUserForm] = useState({
       username: '',
       password: '',
   })
-
-  const userFormHandler = (event) => {
-    setUserForm(prev => {
-      return {...prev, [event.target.name] : event.target.value }
-    })
-  }
-
-  const resetUserForm = () => {
-    setUserForm(prev => {
-      let newLoginState = {...prev}
-      Object.keys(newLoginState).forEach(key => {newLoginState[key] = ''})
-      return newLoginState
-    })
-  }
   
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -36,7 +23,7 @@ const LoginForm = ({setUser}) => {
       )
       blogService.setToken(userData.token)
       setUser(userData)
-      resetUserForm()
+      formService.resetForm(setUserForm)
 
     } catch(err) {
       console.log('Wrong Credentials', err)
@@ -53,7 +40,7 @@ const LoginForm = ({setUser}) => {
             type="text"
             value={userForm.username}
             name="username"
-            onChange={userFormHandler}
+            onChange={(event) => formService.formHandler(setUserForm, event)}
           />
         </div>
         <div>
@@ -62,7 +49,7 @@ const LoginForm = ({setUser}) => {
             type="password"
             value={userForm.password}
             name="password"
-            onChange={userFormHandler}
+            onChange={(event) => formService.formHandler(setUserForm, event)}
           />
         </div>
         <button type="submit">login</button>
