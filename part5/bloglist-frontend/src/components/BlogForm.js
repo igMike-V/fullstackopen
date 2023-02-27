@@ -2,13 +2,21 @@ import React, {useState} from 'react'
 import formService from '../utilities/forms'
 import blogService from '../services/blogs'
 
-const BlogForm = ({setBlogs, setNotification}) => {
+const BlogForm = ({setBlogs, setNotification, blogFormRef}) => {
   // State for controlled form elements
   const [blogForm, setBlogForm] = useState({
     title: '',
     author: '',
     url: '',
   })
+
+  const resetForm = () => {
+    setBlogForm({
+      title: '',
+      author: '',
+      url: '',
+    })
+  }
 
   const addBlog = async (event) => {
     event.preventDefault()
@@ -19,8 +27,10 @@ const BlogForm = ({setBlogs, setNotification}) => {
       setBlogs(prevBlogs => {
         return [...prevBlogs, response]
       })
-      console.log(response)
+      console.log(blogFormRef)
       setNotification({ message: `a new blog: ${response.title} by ${response.author} added`, type: 'notice'})
+      resetForm()
+      blogFormRef.current.toggleVisibility()
     } catch (error) {
       setNotification({ message: `Error, could not add blog, check all inputs and try again.`, type: 'error'})
     }

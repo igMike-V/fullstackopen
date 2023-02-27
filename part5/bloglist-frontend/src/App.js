@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 // Services
 import blogService from './services/blogs'
@@ -9,6 +9,8 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import Toggle from './components/Toggle'
+
 
 
 
@@ -47,14 +49,20 @@ const App = () => {
     }
   }, [user])
 
+  const blogFormRef = useRef()
+
   return (
     <div className='App'>
       { user && <h1>blogs</h1> }
-      {!user && <h1>Log in to application</h1> }
       <Notification notification={notification}/>
+      {!user && <h1>Log in to application</h1> }
       {!user && <LoginForm setUser={setUser} setNotification={setNotification} /> }
       { user && <p>{user.name} is logged in. <button onClick={() => loginService.logout(user, setUser, setNotification)}>logout</button></p> }
-      { user && <BlogForm setBlogs={setBlogs} setNotification={setNotification} /> } 
+      
+      { user && <Toggle buttonLabel="New Note" ref={blogFormRef}>
+        <BlogForm setBlogs={setBlogs} setNotification={setNotification} blogFormRef={blogFormRef} />
+        </Toggle>
+      } 
       { user &&  blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
