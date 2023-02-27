@@ -39,3 +39,15 @@ h1, h2 {
   color: rgb(144, 0, 0);
   background: rgb(255, 113, 113);
 }
+
+.blog-details {
+  padding: .3125em 0 .5em .5em;
+}
+
+.blogs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  
+  padding-top: 20px;
+}
