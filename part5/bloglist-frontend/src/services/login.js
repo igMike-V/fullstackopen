@@ -6,5 +6,10 @@ const login = async credentials => {
   return response.data
 }
 
+const logout = async (setUser) => {
+  setUser(null)
+  window.localStorage.removeItem('loggedInBlogAppUser')
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { login }
+export default { login, logout }
