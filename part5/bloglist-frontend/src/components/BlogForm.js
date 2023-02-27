@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import formService from '../utilities/forms'
 import blogService from '../services/blogs'
-
+// section 5.6 update (already done)
 const BlogForm = ({setBlogs, setNotification, blogFormRef}) => {
   // State for controlled form elements
   const [blogForm, setBlogForm] = useState({
