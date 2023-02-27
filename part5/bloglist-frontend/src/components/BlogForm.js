@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import formService from '../utilities/forms'
 import blogService from '../services/blogs'
 // section 5.6 update (already done)
-const BlogForm = ({setBlogs, setNotification, blogFormRef}) => {
+const BlogForm = ({setBlogs, setNotification, blogFormRef, user}) => {
   // State for controlled form elements
   const [blogForm, setBlogForm] = useState({
     title: '',
@@ -24,10 +24,12 @@ const BlogForm = ({setBlogs, setNotification, blogFormRef}) => {
     const blogObject = {...blogForm}
     try {
       const response = await blogService.create(blogObject)
+      response.user = {
+        name: user.name
+      }
       setBlogs(prevBlogs => {
         return [...prevBlogs, response]
       })
-      console.log(blogFormRef)
       setNotification({ message: `a new blog: ${response.title} by ${response.author} added`, type: 'notice'})
       resetForm()
       blogFormRef.current.toggleVisibility()

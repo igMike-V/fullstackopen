@@ -59,12 +59,16 @@ const App = () => {
       { user && <p>{user.name} is logged in. <button onClick={() => loginService.logout(user, setUser, setNotification)}>logout</button></p> }
       
       { user && <Toggle buttonLabel="New Blog" ref={blogFormRef}>
-        <BlogForm setBlogs={setBlogs} setNotification={setNotification} blogFormRef={blogFormRef} />
+        <BlogForm setBlogs={setBlogs} setNotification={setNotification} blogFormRef={blogFormRef} user={user} />
         </Toggle>
       } 
-      { user &&  blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      { user && 
+        <div className='blogs'>
+          {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} />
+          )}
+        </div>
+      }
     </div>
   )
 }

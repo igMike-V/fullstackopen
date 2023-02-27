@@ -3,8 +3,8 @@ Content-Type: application/json
 
 {
     "name": "Mike Vautour",
-    "username": "MikeV",
-    "password": "horriblepassword"
+    "username": "user",
+    "password": "pass"
 }
 
 ### Get all users
