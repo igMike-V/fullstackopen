@@ -13,7 +13,6 @@ import Toggle from './components/Toggle'
 
 
 
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
