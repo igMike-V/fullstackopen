@@ -3,7 +3,7 @@ import loginService from '../services/login'
 //import blogService from '../services/blogs'
 import formService from '../utilities/forms'
 
-const LoginForm = ({setUser}) => {
+const LoginForm = ({setUser, setNotification}) => {
   // State for controlled form elements
   const [userForm, setUserForm] = useState({
       username: '',
@@ -26,13 +26,12 @@ const LoginForm = ({setUser}) => {
       formService.resetForm(setUserForm)
 
     } catch(err) {
-      console.log('Wrong Credentials', err)
+      setNotification({ message: `Wrong username or password`, type: 'error'})
     }
   }
 
   return (
     <div className="login-form">
-      <h1>Log in to application</h1>
       <form onSubmit={handleLogin}>
         <div>
         Username:

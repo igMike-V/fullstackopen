@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import formService from '../utilities/forms'
 import blogService from '../services/blogs'
 
-const BlogForm = ({setBlogs}) => {
+const BlogForm = ({setBlogs, setNotification}) => {
   // State for controlled form elements
   const [blogForm, setBlogForm] = useState({
     title: '',
@@ -14,11 +14,17 @@ const BlogForm = ({setBlogs}) => {
     event.preventDefault()
     // TODO add error handling 
     const blogObject = {...blogForm}
-    const response = await blogService.create(blogObject)
-    console.log(response)
-    setBlogs(prevBlogs => {
-      return [...prevBlogs, response]
-    })
+    try {
+      const response = await blogService.create(blogObject)
+      setBlogs(prevBlogs => {
+        return [...prevBlogs, response]
+      })
+      console.log(response)
+      setNotification({ message: `a new blog: ${response.title} by ${response.author} added`, type: 'notice'})
+    } catch (error) {
+      setNotification({ message: `Error, could not add blog, check all inputs and try again.`, type: 'error'})
+    }
+    
   }
 
   return (
