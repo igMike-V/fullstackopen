@@ -36,9 +36,10 @@ const App = () => {
       blogService.setToken(user.token)
     }
     // Get blogs
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then(blogs => {
       setBlogs( blogs )
-    )
+      sortBlogs()
+    })
   }, [])
 
   useEffect(() => {
@@ -59,8 +60,17 @@ const App = () => {
         }
       })
     })
-
+    sortBlogs()
   }
+
+  const sortBlogs = () => {
+    setBlogs(prevBlogs => {
+      return prevBlogs.sort((a, b) => {
+        return b.likes - a.likes
+      })
+    })
+  }
+
   const blogFormRef = useRef()
 
   return (
