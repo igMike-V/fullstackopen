@@ -51,8 +51,8 @@ const App = () => {
 
   // Updates likes in state
   const updateLikes = (id, likes) => {
-    setBlogs(prev => {
-      return prev.map(blogObj => {
+    setBlogs(prevBlogs => {
+      return prevBlogs.map(blogObj => {
         if(blogObj.id === id) {
           return {...blogObj, likes}
         } else {
@@ -68,6 +68,12 @@ const App = () => {
       return prevBlogs.sort((a, b) => {
         return b.likes - a.likes
       })
+    })
+  }
+
+  const removeBlogFromState = (id) => {
+    setBlogs(prevBlogs => {
+      return prevBlogs.filter(blogObj => id !== blogObj.id)
     })
   }
 
@@ -88,7 +94,7 @@ const App = () => {
       { user && 
         <div className='blogs'>
           {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} setNotification={setNotification} updateLikes={updateLikes} />
+          <Blog key={blog.id} blog={blog} setNotification={setNotification} updateLikes={updateLikes} user={user} removeBlogFromState={removeBlogFromState} />
           )}
         </div>
       }
