@@ -17,9 +17,9 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
-  
+
   useEffect(() => {
-    if(notification != null){
+    if(notification !== null){
       setTimeout(() => {
         console.log('time to kill notification')
         setNotification(null)
@@ -44,7 +44,7 @@ const App = () => {
 
   useEffect(() => {
     // Set token if logged in
-    if(user != null){
+    if(user !== null){
       blogService.setToken(user.token)
     }
   }, [user])
@@ -54,9 +54,9 @@ const App = () => {
     setBlogs(prevBlogs => {
       return prevBlogs.map(blogObj => {
         if(blogObj.id === id) {
-          return {...blogObj, likes}
+          return { ...blogObj, likes }
         } else {
-          return {...blogObj}
+          return { ...blogObj }
         }
       })
     })
@@ -86,15 +86,15 @@ const App = () => {
       {!user && <h1>Log in to application</h1> }
       {!user && <LoginForm setUser={setUser} setNotification={setNotification} /> }
       { user && <p>{user.name} is logged in. <button onClick={() => loginService.logout(user, setUser, setNotification)}>logout</button></p> }
-      
+
       { user && <Toggle buttonLabel="New Blog" ref={blogFormRef}>
         <BlogForm setBlogs={setBlogs} setNotification={setNotification} blogFormRef={blogFormRef} user={user} />
-        </Toggle>
-      } 
-      { user && 
+      </Toggle>
+      }
+      { user &&
         <div className='blogs'>
           {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} setNotification={setNotification} updateLikes={updateLikes} user={user} removeBlogFromState={removeBlogFromState} />
+            <Blog key={blog.id} blog={blog} setNotification={setNotification} updateLikes={updateLikes} user={user} removeBlogFromState={removeBlogFromState} />
           )}
         </div>
       }

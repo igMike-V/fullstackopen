@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import formService from '../utilities/forms'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 // section 5.6 update (already done)
-const BlogForm = ({setBlogs, setNotification, blogFormRef, user}) => {
+const BlogForm = ({ setBlogs, setNotification, blogFormRef, user }) => {
   // State for controlled form elements
   const [blogForm, setBlogForm] = useState({
     title: '',
@@ -20,8 +21,8 @@ const BlogForm = ({setBlogs, setNotification, blogFormRef, user}) => {
 
   const addBlog = async (event) => {
     event.preventDefault()
-    // TODO add error handling 
-    const blogObject = {...blogForm}
+    // TODO add error handling
+    const blogObject = { ...blogForm }
     try {
       const response = await blogService.create(blogObject)
       response.user = {
@@ -30,13 +31,12 @@ const BlogForm = ({setBlogs, setNotification, blogFormRef, user}) => {
       setBlogs(prevBlogs => {
         return [...prevBlogs, response]
       })
-      setNotification({ message: `a new blog: ${response.title} by ${response.author} added`, type: 'notice'})
+      setNotification({ message: `a new blog: ${response.title} by ${response.author} added`, type: 'notice' })
       resetForm()
       blogFormRef.current.toggleVisibility()
     } catch (error) {
-      setNotification({ message: `Error, could not add blog, check all inputs and try again.`, type: 'error'})
+      setNotification({ message: 'Error, could not add blog, check all inputs and try again.', type: 'error' })
     }
-    
   }
 
   return (
@@ -45,7 +45,7 @@ const BlogForm = ({setBlogs, setNotification, blogFormRef, user}) => {
       <form onSubmit={addBlog}>
         <div>
         title:
-          <input 
+          <input
             type="text"
             value={blogForm.title}
             name="title"
@@ -54,7 +54,7 @@ const BlogForm = ({setBlogs, setNotification, blogFormRef, user}) => {
         </div>
         <div>
         Author:
-        <input 
+          <input
             type="text"
             value={blogForm.author}
             name="author"
@@ -63,7 +63,7 @@ const BlogForm = ({setBlogs, setNotification, blogFormRef, user}) => {
         </div>
         <div>
         url:
-        <input 
+          <input
             type="text"
             value={blogForm.url}
             name="url"
@@ -74,6 +74,12 @@ const BlogForm = ({setBlogs, setNotification, blogFormRef, user}) => {
       </form>
     </div>
   )
+}
+
+BlogForm.propTypes = {
+  setBlogs: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 }
 
 export default BlogForm
