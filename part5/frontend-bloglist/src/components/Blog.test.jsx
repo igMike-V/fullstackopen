@@ -1,13 +1,15 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 //import { beforeEach, describe, test } from 'node:test'
 
 describe('<Blog />', () => {
   let blog
-  let container
+  let user = {
+    name: 'user2'
+  }
   beforeEach(() => {
     blog = {
       author: "blog author",
@@ -22,7 +24,8 @@ describe('<Blog />', () => {
           id: '63fdacef0d53ed86444ecd95'
         }
     }
-    container = render(<Blog blog={blog} />)
+
+   render(<Blog blog={blog} user={user} />)
   })
 
   test('renders blog\'s title and author but not the url or number of likes by default', () => {
@@ -33,6 +36,14 @@ describe('<Blog />', () => {
     expect(url).not.toBeInTheDocument()
     expect(likes).not.toBeInTheDocument()
     
+  })
+
+  test('blog\'s URL and number of likes are shown when the button', async () => {
+    const user = userEvent.setup()
+    const showHideButton = screen.getByText('show')
+    fireEvent.click(showHideButton)
+    expect(screen.queryByText('example.com')).toBeInTheDocument()
+    expect(screen.queryByText('likes: 4')).toBeInTheDocument()
   })
 
 })
