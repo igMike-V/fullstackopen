@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+//import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 //import { beforeEach, describe, test } from 'node:test'
 
@@ -10,6 +10,10 @@ describe('<Blog />', () => {
   let user = {
     name: 'user2'
   }
+
+  mockHandleLike = jest.fn()
+  mockSetNotification = jest.fn()
+
   beforeEach(() => {
     blog = {
       author: "blog author",
@@ -25,7 +29,7 @@ describe('<Blog />', () => {
         }
     }
 
-   render(<Blog blog={blog} user={user} />)
+   render(<Blog blog={blog} user={user} handleLike={mockHandleLike} setNotification={mockSetNotification} />)
   })
 
   test('renders blog\'s title and author but not the url or number of likes by default', () => {
@@ -38,12 +42,22 @@ describe('<Blog />', () => {
     
   })
 
-  test('blog\'s URL and number of likes are shown when the button', async () => {
-    const user = userEvent.setup()
+  test('blog\'s URL and number of likes are shown when the button', () => {
     const showHideButton = screen.getByText('show')
     fireEvent.click(showHideButton)
     expect(screen.queryByText('example.com')).toBeInTheDocument()
     expect(screen.queryByText('likes: 4')).toBeInTheDocument()
+  })
+
+  test('if the like button is clicked twice, the event handler the component received as props is called twice.', () => {
+    const showHideButton = screen.getByText('show')
+    fireEvent.click(showHideButton)
+    const likeButton = screen.getByText('like')
+    expect(likeButton).toBeInTheDocument()
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+    screen.debug()
+    expect(mockHandleLike.mock.calls).toHaveLength(2)
   })
 
 })

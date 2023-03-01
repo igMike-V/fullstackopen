@@ -21,7 +21,6 @@ const App = () => {
   useEffect(() => {
     if(notification !== null){
       setTimeout(() => {
-        console.log('time to kill notification')
         setNotification(null)
       }, 5000)
     }
@@ -48,6 +47,17 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [user])
+
+  const handleLike = async (blog) => {
+    try{
+      const response = await blogService.update({ ...blog, user: blog.user.id, likes: (blog.likes + 1) }, blog.id)
+      setNotification({ message: `Like logged for ${response.title}`, type: 'notice' })
+      updateLikes(response.id, response.likes)
+    } catch (error) {
+      setNotification({ message: 'Somthing went wrong try again later', type: 'error' })
+    }
+  
+  }
 
   // Updates likes in state
   const updateLikes = (id, likes) => {
@@ -94,7 +104,7 @@ const App = () => {
       { user &&
         <div className='blogs'>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} setNotification={setNotification} updateLikes={updateLikes} user={user} removeBlogFromState={removeBlogFromState} />
+            <Blog key={blog.id} blog={blog} setNotification={setNotification} handleLike={handleLike} user={user} removeBlogFromState={removeBlogFromState} />
           )}
         </div>
       }
