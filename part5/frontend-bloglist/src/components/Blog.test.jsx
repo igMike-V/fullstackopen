@@ -56,7 +56,6 @@ describe('<Blog />', () => {
     expect(likeButton).toBeInTheDocument()
     fireEvent.click(likeButton)
     fireEvent.click(likeButton)
-    screen.debug()
     expect(mockHandleLike.mock.calls).toHaveLength(2)
   })
 

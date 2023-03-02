@@ -89,6 +89,23 @@ const App = () => {
 
   const blogFormRef = useRef()
 
+  const createBlog = async (blogObject) => {
+    try {
+      const response = await blogService.create(blogObject)
+      response.user = {
+        name: user.name
+      }
+      setBlogs(prevBlogs => {
+        return [...prevBlogs, response]
+      })
+      setNotification({ message: `a new blog: ${response.title} by ${response.author} added`, type: 'notice' })
+      return true
+    } catch (error) {
+      setNotification({ message: 'Error, could not add blog, check all inputs and try again.', type: 'error' })
+      return false
+    }
+  }
+
   return (
     <div className='App'>
       { user && <h1>blogs</h1> }
@@ -98,7 +115,7 @@ const App = () => {
       { user && <p>{user.name} is logged in. <button onClick={() => loginService.logout(user, setUser, setNotification)}>logout</button></p> }
 
       { user && <Toggle buttonLabel="New Blog" ref={blogFormRef}>
-        <BlogForm setBlogs={setBlogs} setNotification={setNotification} blogFormRef={blogFormRef} user={user} />
+        <BlogForm createBlog={createBlog} blogFormRef={blogFormRef} />
       </Toggle>
       }
       { user &&

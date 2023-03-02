@@ -3,7 +3,7 @@ import formService from '../utilities/forms'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 // section 5.6 update (already done)
-const BlogForm = ({ setBlogs, setNotification, blogFormRef, user }) => {
+const BlogForm = ({ blogFormRef, createBlog }) => {
   // State for controlled form elements
   const [blogForm, setBlogForm] = useState({
     title: '',
@@ -21,21 +21,11 @@ const BlogForm = ({ setBlogs, setNotification, blogFormRef, user }) => {
 
   const addBlog = async (event) => {
     event.preventDefault()
-    // TODO add error handling
     const blogObject = { ...blogForm }
-    try {
-      const response = await blogService.create(blogObject)
-      response.user = {
-        name: user.name
-      }
-      setBlogs(prevBlogs => {
-        return [...prevBlogs, response]
-      })
-      setNotification({ message: `a new blog: ${response.title} by ${response.author} added`, type: 'notice' })
+    const response = await createBlog(blogObject)
+    if(response) {
       resetForm()
       blogFormRef.current.toggleVisibility()
-    } catch (error) {
-      setNotification({ message: 'Error, could not add blog, check all inputs and try again.', type: 'error' })
     }
   }
 
@@ -49,6 +39,7 @@ const BlogForm = ({ setBlogs, setNotification, blogFormRef, user }) => {
             type="text"
             value={blogForm.title}
             name="title"
+            aria-label="title"
             onChange={(event) => formService.formHandler(setBlogForm, event)}
           />
         </div>
@@ -58,6 +49,7 @@ const BlogForm = ({ setBlogs, setNotification, blogFormRef, user }) => {
             type="text"
             value={blogForm.author}
             name="author"
+            aria-label='author'
             onChange={(event) => formService.formHandler(setBlogForm, event)}
           />
         </div>
@@ -67,6 +59,7 @@ const BlogForm = ({ setBlogs, setNotification, blogFormRef, user }) => {
             type="text"
             value={blogForm.url}
             name="url"
+            aria-label="url"
             onChange={(event) => formService.formHandler(setBlogForm, event)}
           />
         </div>
@@ -77,9 +70,7 @@ const BlogForm = ({ setBlogs, setNotification, blogFormRef, user }) => {
 }
 
 BlogForm.propTypes = {
-  setBlogs: PropTypes.func.isRequired,
-  setNotification: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  createBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm
