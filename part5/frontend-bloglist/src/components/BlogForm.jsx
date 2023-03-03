@@ -39,7 +39,7 @@ const BlogForm = ({ blogFormRef, createBlog }) => {
             type="text"
             value={blogForm.title}
             name="title"
-            aria-label="title"
+            id="blog-title"
             onChange={(event) => formService.formHandler(setBlogForm, event)}
           />
         </div>
@@ -49,7 +49,7 @@ const BlogForm = ({ blogFormRef, createBlog }) => {
             type="text"
             value={blogForm.author}
             name="author"
-            aria-label='author'
+            id='blog-author'
             onChange={(event) => formService.formHandler(setBlogForm, event)}
           />
         </div>
@@ -59,7 +59,7 @@ const BlogForm = ({ blogFormRef, createBlog }) => {
             type="text"
             value={blogForm.url}
             name="url"
-            aria-label="url"
+            id="blog-url"
             onChange={(event) => formService.formHandler(setBlogForm, event)}
           />
         </div>

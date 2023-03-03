@@ -22,7 +22,7 @@ describe('Blog app', function() {
       cy.contains('Mike Vautour is logged in.')
     })
 
-    it.('fails with wrong credentials', function() {
+    it('fails with wrong credentials', function() {
       cy.get('#username').type('mike')
       cy.get('#password').type('wrongpass')
       cy.get('#login-button').click()
@@ -42,7 +42,16 @@ describe('Blog app', function() {
     })
 
     it('A blog can be created', function() {
-      cy.get('.blog-form-toggle').click()
+      cy.get('.blog-form-show').click()
+      cy.get('#blog-title').type('Building up an immunity to iocane powder')
+      cy.get('#blog-author').type('Wesley')
+      cy.get('#blog-url').type('https://getyarn.io/yarn-clip/b49853f4-c0c6-4474-90b4-dd238a66609b')
+      cy.get('#new-blog-button').click()
+
+      cy.get('.notice')
+        .should('contain', 'a new blog: Building up an immunity to iocane powder by Wesley added')
+        .and('have.css', 'background-color', 'rgb(178, 247, 108)')
+
     })
   })
 
