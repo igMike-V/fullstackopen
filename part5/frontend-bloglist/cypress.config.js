@@ -7,8 +7,11 @@ export default defineConfig({
       // implement node event listeners here
       on("file:preprocessor", vitePreprocessor());
     },
+    baseUrl: 'http://localhost:3000',
   },
-
+  env: {
+    BACKEND: 'http://localhost:3003/api'
+  },
   component: {
     devServer: {
       framework: "react",

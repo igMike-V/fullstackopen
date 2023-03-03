@@ -41,6 +41,7 @@ const LoginForm = ({ setUser, setNotification }) => {
             type="text"
             value={userForm.username}
             name="username"
+            id="username"
             onChange={(event) => formService.formHandler(setUserForm, event)}
           />
         </div>
@@ -50,10 +51,11 @@ const LoginForm = ({ setUser, setNotification }) => {
             type="password"
             value={userForm.password}
             name="password"
+            id="password"
             onChange={(event) => formService.formHandler(setUserForm, event)}
           />
         </div>
-        <button type="submit">login</button>
+        <button id='login-button' type="submit">login</button>
       </form>
     </div>
   )
