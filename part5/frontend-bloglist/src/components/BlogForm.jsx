@@ -63,7 +63,7 @@ const BlogForm = ({ blogFormRef, createBlog }) => {
             onChange={(event) => formService.formHandler(setBlogForm, event)}
           />
         </div>
-        <button type="submit">Create</button>
+        <button id='new-blog-button' type="submit">Create</button>
       </form>
     </div>
   )

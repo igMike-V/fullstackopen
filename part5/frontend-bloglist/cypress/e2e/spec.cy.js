@@ -22,7 +22,7 @@ describe('Blog app', function() {
       cy.contains('Mike Vautour is logged in.')
     })
 
-    it.only('fails with wrong credentials', function() {
+    it.('fails with wrong credentials', function() {
       cy.get('#username').type('mike')
       cy.get('#password').type('wrongpass')
       cy.get('#login-button').click()
@@ -31,6 +31,18 @@ describe('Blog app', function() {
       cy.get('.error')
         .should('contain', 'Wrong username or password')
         .and('have.css', 'color', 'rgb(144, 0, 0)')
+    })
+  })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type('mike')
+      cy.get('#password').type('password')
+      cy.get('#login-button').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.get('.blog-form-toggle').click()
     })
   })
 
