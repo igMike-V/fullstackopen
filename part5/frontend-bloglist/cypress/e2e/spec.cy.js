@@ -74,7 +74,7 @@ describe('Blog app', function() {
       cy.get('.blog-details').should('contain', 'likes: 2')
     })
 
-    it.only('user who created blog can delete it', function() {
+    it('user who created blog can delete it', function() {
       cy.addBlog()
       cy.get('.blog').find('.show-button').click()
       cy.get('.blog-details').find('.remove-button').click()
@@ -82,6 +82,15 @@ describe('Blog app', function() {
         .should('contain', 'Removed Blog: Building up an immunity to iocane powder')
         .and('have.css', 'background-color', 'rgb(178, 247, 108)')
       
+    })
+
+    it.only('other users but the creator do not see the delete button.', function() {
+      cy.addBlog()
+      cy.get('#logout-button').click()
+      cy.login({ username:'user', password:'password' })
+
+      cy.get('.blog').find('.show-button').click()
+      cy.get('.blog-details').find('remove-button').should('not.exist')
     })
   })
 
