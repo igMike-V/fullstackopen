@@ -60,17 +60,28 @@ describe('Blog app', function() {
 
     })
 
-    it.only('user can like own blog', function() {
+    it('user can like own blog', function() {
       cy.addBlog()
       cy.get('.blog').find('.show-button').click()
       cy.get('.blog-details').find('.like-button').click()
       cy.get('.blog-details').should('contain', 'likes: 1')
+      
       cy.get('#logout-button').click()
 
       cy.login({ username:'user', password:'password' })
       cy.get('.blog').find('.show-button').click()
       cy.get('.blog-details').find('.like-button').click()
       cy.get('.blog-details').should('contain', 'likes: 2')
+    })
+
+    it.only('user who created blog can delete it', function() {
+      cy.addBlog()
+      cy.get('.blog').find('.show-button').click()
+      cy.get('.blog-details').find('.remove-button').click()
+      cy.get('.notice')
+        .should('contain', 'Removed Blog: Building up an immunity to iocane powder')
+        .and('have.css', 'background-color', 'rgb(178, 247, 108)')
+      
     })
   })
 
