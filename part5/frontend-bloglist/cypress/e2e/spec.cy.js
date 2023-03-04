@@ -84,7 +84,8 @@ describe('Blog app', function() {
       
     })
 
-    it.only('other users but the creator do not see the delete button.', function() {
+    
+    it('other users but the creator do not see the delete button.', function() {
       cy.addBlog()
       cy.get('#logout-button').click()
       cy.login({ username:'user', password:'password' })
@@ -92,7 +93,23 @@ describe('Blog app', function() {
       cy.get('.blog').find('.show-button').click()
       cy.get('.blog-details').find('remove-button').should('not.exist')
     })
-  })
+
+    it('blogs are ordered according to likes with the blog with the most likes being first', function() {
+      cy.addMultipleBlogs(2)
+      cy.get('.blog').eq(0).find('.show-button').click()
+      cy.get('.blog-details').find('.like-button').click()
+      cy.get('.blog-details').should('contain', 'likes: 1')
+      cy.get('.blog').eq(0).find('.show-button').click()
+      cy.get('.blog').eq(1).find('.show-button').click()
+      cy.get('.blog-details').find('.like-button').click()
+      cy.get('.blog-details').should('contain', 'likes: 1')
+      cy.get('.blog-details').find('.like-button').click()
+      cy.get('.blog-details').should('contain', 'likes: 2')
+      cy.get('.blog').eq(0).should('contain', 'Blog2 Author2')
+    })
+  
+  }) // End of when logged in
+
 
 
 })

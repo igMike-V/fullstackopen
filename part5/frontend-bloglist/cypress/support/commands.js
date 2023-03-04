@@ -57,3 +57,14 @@ Cypress.Commands.add('addBlog', () => {
   cy.get('#blog-url').type('https://getyarn.io/yarn-clip/b49853f4-c0c6-4474-90b4-dd238a66609b')
   cy.get('#new-blog-button').click()
 })
+
+Cypress.Commands.add('addMultipleBlogs', (qty) => {
+  for(let i = 1; i <= qty; i++) {
+    cy.get('.blog-form-show').click()
+    cy.get('#blog-title').type(`Blog${i}`)
+    cy.get('#blog-author').type(`Author${i}`)
+    cy.get('#blog-url').type('https://example.com')
+    cy.get('#new-blog-button').click()
+  }
+  
+})
