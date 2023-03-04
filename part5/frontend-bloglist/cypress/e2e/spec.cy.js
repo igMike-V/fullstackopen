@@ -1,12 +1,18 @@
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
-    const user = {
+    const MAINUSER = {
       name: 'Mike Vautour',
       username: 'mike',
       password: 'password'
     }
-    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+    const SECONDUSER = {
+      name: 'Other User',
+      username: 'user',
+      password: 'password'
+    }
+    cy.createUser(MAINUSER)
+    cy.createUser(SECONDUSER)
     cy.visit('')
   })
 
@@ -53,6 +59,20 @@ describe('Blog app', function() {
         .and('have.css', 'background-color', 'rgb(178, 247, 108)')
 
     })
+
+    it.only('user can like own blog', function() {
+      cy.addBlog()
+      cy.get('.blog').find('.show-button').click()
+      cy.get('.blog-details').find('.like-button').click()
+      cy.get('.blog-details').should('contain', 'likes: 1')
+      cy.get('#logout-button').click()
+
+      cy.login({ username:'user', password:'password' })
+      cy.get('.blog').find('.show-button').click()
+      cy.get('.blog-details').find('.like-button').click()
+      cy.get('.blog-details').should('contain', 'likes: 2')
+    })
   })
+
 
 })

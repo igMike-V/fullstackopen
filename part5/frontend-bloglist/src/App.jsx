@@ -112,7 +112,7 @@ const App = () => {
       <Notification notification={notification}/>
       {!user && <h1>Log in to application</h1> }
       {!user && <LoginForm setUser={setUser} setNotification={setNotification} /> }
-      { user && <p>{user.name} is logged in. <button onClick={() => loginService.logout(user, setUser, setNotification)}>logout</button></p> }
+      { user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, setNotification)}>logout</button></p> }
 
       { user && <Toggle buttonLabel="New Blog" buttonClass="blog-form" ref={blogFormRef}>
         <BlogForm createBlog={createBlog} blogFormRef={blogFormRef} />

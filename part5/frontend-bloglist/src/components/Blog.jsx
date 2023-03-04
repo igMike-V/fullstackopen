@@ -17,11 +17,11 @@ const Blog = ({ blog, setNotification, user, removeBlogFromState, handleLike }) 
 
   return (
     <div className='blog'>
-      {blog.title} {blog.author} <button onClick={() => setBlogVisible(!blogVisible)}>{blogVisible ? 'hide' : 'show'}</button>
+      {blog.title} {blog.author} <button className='show-button' onClick={() => setBlogVisible(!blogVisible)}>{blogVisible ? 'hide' : 'show'}</button>
       {blogVisible &&
         <div className='blog-details'>
           <p>{blog.url}</p>
-          <p>likes: {blog.likes} <button onClick={() => handleLike(blog)}>like</button></p>
+          <p>likes: {blog.likes} <button className="like-button" onClick={() => handleLike(blog)}>like</button></p>
           <p>{blog.user.name}</p>
           {user.name === blog.user.name && <button className='remove-button' onClick={removeBlog}>remove</button>}
         </div>
