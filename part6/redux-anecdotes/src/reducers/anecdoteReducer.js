@@ -20,20 +20,33 @@ const asObject = (anecdote) => {
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
-  if ( action.type === 'VOTE'){
-    // Copy state to avoid mutation
-    const newState = [...state]
-    const id = action.payload.id
-    // Increment votes on matching object
-    newState.map(anecdote => {
-      if (anecdote.id === id) {
-        anecdote.votes++
-      }
-      return anecdote
-    })
-    return newState
+  switch(action.type) {
+    case 'VOTE':
+        // Copy state to avoid mutation
+      const newState = [...state]
+      const id = action.payload.id
+      // Increment votes on matching object
+      newState.map(anecdote => {
+        if (anecdote.id === id) {
+          anecdote.votes++
+        }
+        return anecdote
+      })
+      return newState
+    
+    case 'NEW-ANECDOTE':
+      return [...state, action.payload]
+    default:
+      return state
   }
-  return state
+
+}
+
+export const createAnecdote = (content) => {
+  return {
+    type: 'NEW-ANECDOTE',
+    payload: asObject(content)
+  }
 }
 
 export const updateVote = (id) => {
