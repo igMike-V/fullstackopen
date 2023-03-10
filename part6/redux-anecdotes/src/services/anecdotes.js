@@ -21,7 +21,6 @@ const createNew = async (content) => {
 const addVote = async (id) => {
   const query = await axios.get(`${baseUrl}/${id}`)
   const newAnecdote = { ...query.data, votes: Number(query.data.votes) + 1 }
-  console.log('after increment', newAnecdote)
   const req = await axios.put(`${baseUrl}/${id}`, newAnecdote)
   return req.data
 }
