@@ -5,7 +5,6 @@ import { setNotification, removeNotification } from '../reducers/notificationRed
 const AnecdoteList = () => {
   const anecdotes = useSelector(state => {
     return state.anecdotes.filter(anecdote => anecdote.content.toLowerCase().match(state.filter.toLowerCase()))
-  
   })
   const dispatch = useDispatch()
 
@@ -13,7 +12,7 @@ const AnecdoteList = () => {
     dispatch(updateVote(id))
     const voteTarget = anecdotes.find(anecdote => anecdote.id === id).content
     dispatch(setNotification(`You voted: '${voteTarget}'`))
-    setTimeout(()=>{
+    setTimeout(() => {
       dispatch(removeNotification())
     },5000)
   }

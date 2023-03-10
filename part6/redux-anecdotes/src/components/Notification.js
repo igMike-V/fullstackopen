@@ -1,11 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { removeNotification } from '../reducers/notificationReducer'
+import { useSelector } from 'react-redux'
 
 const Notification = () => {
   const notification = useSelector((state) => {
     return state.notification
   })
-  
+
   const style = {
     border: 'solid',
     padding: 10,

@@ -18,4 +18,4 @@ const createNew = async (content) => {
   return res.data
 }
 
-export default {getAll, createNew}
+export default { getAll, createNew }
