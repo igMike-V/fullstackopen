@@ -10,6 +10,9 @@ const AnecdoteForm = ({ queryClient }) => {
     onSuccess: (data, returnedAnecdote) => {
       queryClient.invalidateQueries('anecdotes')
       dispatch({ type: 'SET', payload: `anecdote '${returnedAnecdote.content}' created` })
+    },
+    onError: (error, badRequestObject) => {
+      dispatch({ type: 'SET', payload: `anecdote '${badRequestObject.content}' too short, must have length 5 or more` })
     }
   })
 
