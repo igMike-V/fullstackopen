@@ -1,13 +1,15 @@
-import { useMutation} from 'react-query'
+import { useMutation } from 'react-query'
 import { createAnecdote } from '../requests'
+import { useNotificationDispatch } from '../NotificationContext'
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
 const AnecdoteForm = ({ queryClient }) => {
-  
+  const dispatch = useNotificationDispatch()
   const newAnecdoteMutation = useMutation(createAnecdote, {
-    onSuccess: () => {
+    onSuccess: (data, returnedAnecdote) => {
       queryClient.invalidateQueries('anecdotes')
+      dispatch({ type: 'SET', payload: `anecdote '${returnedAnecdote.content}' created` })
     }
   })
 
