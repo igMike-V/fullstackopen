@@ -42,6 +42,7 @@ body {
     font-weight: 400;
     background: var(--COL-BODY-BG);
     color: var(--COL-TEXT);
+    margin: 5% auto;
 }
 
 
@@ -68,15 +69,30 @@ button{
 }
 
 /* || APP STYLES */
-
 .App {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+}
+
+main {
     background-color: var(--COL-UI-BG);
-    max-width: 500px;
     border-radius: var(--GEN-BORDER-RAD);
-    margin: 5% auto;
-    padding: 3rem;
+    padding: 2rem;
 }
 
 .menu {
     padding: 1em 0;
+}
+
+footer {
+    font-size: .5rem;
+    text-align: center;
+    padding: .5em 1em;
+}
+
+.ancedote-single { 
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }

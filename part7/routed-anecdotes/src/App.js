@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useParams } from 'react-router-dom'
 import './app.css'
 
 const Menu = () => {
@@ -19,7 +19,7 @@ const AnecdoteList = ({ anecdotes }) => (
   <div className='anecdote-list'>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <li key={anecdote.id} ><Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
     </ul>
   </div>
 )
@@ -39,11 +39,11 @@ const About = () => (
 )
 
 const Footer = () => (
-  <div className='footer'>
+  <footer className='footer'>
     Anecdote app for <a href='https://fullstackopen.com/'>Full Stack Open</a>.
 
     See <a href='https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js</a> for the source code.
-  </div>
+  </footer>
 )
 
 const CreateNew = (props) => {
@@ -82,7 +82,18 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
+}
 
+const Anecdote = ({ anecdotes }) => {
+  const {content, author, info, votes } = anecdotes[useParams().id - 1]
+  return (
+    <section className="ancedote-single" >
+      <h1>{content} by {author}</h1>
+      <p>has {votes} votes</p>
+      <p>for more info see <Link to={info} >{info}</Link></p>
+      <Link to="/" >&larr; Back</Link>
+    </section>
+  )
 }
 
 const App = () => {
@@ -126,13 +137,16 @@ const App = () => {
 
   return (
     <div className='App'>
-      <h1>Software anecdotes</h1>
-      <Menu />
-      <Routes>
-        <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path="/create" element={<CreateNew addNew={addNew} />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
+      <main>
+        <h1>Software anecdotes</h1>
+        <Menu />
+        <Routes>
+          <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
+          <Route path="/create" element={<CreateNew addNew={addNew} />} />
+          <Route path="/about" element={<About />} />
+          <Route path='/anecdotes/:id' element={<Anecdote anecdotes={anecdotes} /> } />
+        </Routes>
+      </main>
       <Footer />
     </div>
   )
