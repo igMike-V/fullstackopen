@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@800&display=swap');
+
+/* || RESET  */
+html, body, h1, h2, h3, h4, p{
+    margin: 0;
+    padding: 0;
+   
+}
+
+body {
+    /* || save space for the scrollbar */
+    width: calc(100vw - 34px);
+}
+
+/* || VARIABLES */
+
+:root {
+    /* || TYPEFACE */
+    --TYPE-MAIN: 'Inter', sans-serif;
+    --TYPE-ALT: 'Karla', sans-serif;
+    
+    --TYPE-MAIN-SIZE: 16px;
+    
+    /* || COLOURS */
+    --COL-BODY-BG: #111827;
+    --COL-UI-BG: #1F2937;
+    --COL-TEXT: #fff;
+    --COL-MAIN: #E11D48;
+    --COL-INPUT-BG: #273549;
+    --COL-INPUT-TEXT: #D1D5DB;
+    --COL-CONTROL: #03a199;
+     /* || GENERAL INTERFACE */
+    --GEN-BORDER-RAD: 5px;
+ }
+
+/* || GENERAL STYLES */
+
+body {
+    font-family: var(--TYPE-MAIN);
+    font-size: var(--TYPE-MAIN-SIZE);
+    font-weight: 400;
+    background: var(--COL-BODY-BG);
+    color: var(--COL-TEXT);
+}
+
+
+a{
+    color: whitesmoke
+}
+
+a:hover {
+    color: rgb(177, 112, 237);
+}
+
+
+/* || UTILITY AND THEME CLASSES */
+
+button{
+    cursor: pointer;
+    padding: 12px 20px;
+    background-color: var(--COL-MAIN);
+    color: var(--COL-TEXT);
+    border-radius: var(--GEN-BORDER-RAD);
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* || APP STYLES */
+
+.App {
+    background-color: var(--COL-UI-BG);
+    max-width: 500px;
+    border-radius: var(--GEN-BORDER-RAD);
+    margin: 5% auto;
+    padding: 3rem;
+}
+
+.menu {
+    padding: 1em 0;
+}
