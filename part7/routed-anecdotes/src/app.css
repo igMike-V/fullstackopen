@@ -5,6 +5,7 @@
 html, body, h1, h2, h3, h4, p{
     margin: 0;
     padding: 0;
+    padding-bottom: .5em;
    
 }
 
@@ -59,7 +60,8 @@ a:hover {
 
 button{
     cursor: pointer;
-    padding: 12px 20px;
+    padding: 6px 20px;
+    margin: .25em 0;
     background-color: var(--COL-MAIN);
     color: var(--COL-TEXT);
     border-radius: var(--GEN-BORDER-RAD);
@@ -95,4 +97,17 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 1em;
+}
+
+.input-container {
+    padding-bottom: .5em;
+}
+.input-container span { 
+    padding-right: .5em;
+    display: inline-block;
+    width: 8em;
+}
+
+.input-container input {
+    padding: .25em .5em;
 }
