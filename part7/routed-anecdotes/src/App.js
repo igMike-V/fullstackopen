@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { Routes, Route, Link, useParams } from 'react-router-dom'
+import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom'
 import './app.css'
+
+
 
 const Menu = () => {
   const padding = {
@@ -66,18 +68,18 @@ const CreateNew = (props) => {
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          content
+        <div className='input-container'>
+          <span>content</span>
           <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
         </div>
-        <div>
-          author
+        <div className='input-container'>
+          <span>author</span>
           <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
         </div>
-        <div>
-          url for more info
+        <div className='input-container'>
+          <span>url for more info</span>
           <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
-        </div>
+        </div >
         <button>create</button>
       </form>
     </div>
@@ -85,7 +87,8 @@ const CreateNew = (props) => {
 }
 
 const Anecdote = ({ anecdotes }) => {
-  const {content, author, info, votes } = anecdotes[useParams().id - 1]
+  const id = useParams().id
+  const {content, author, info, votes } = anecdotes.find(a => a.id === +id)
   return (
     <section className="ancedote-single" >
       <h1>{content} by {author}</h1>
@@ -97,6 +100,7 @@ const Anecdote = ({ anecdotes }) => {
 }
 
 const App = () => {
+  const navigate = useNavigate()
   const [anecdotes, setAnecdotes] = useState([
     {
       content: 'If it hurts, do it more often',
@@ -119,10 +123,14 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`a new ancdote ${anecdote.content} created!`)
+    navigate('/')
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
   }
 
-  const anecdoteById = (id) =>
-    anecdotes.find(a => a.id === id)
+  const anecdoteById = (id) => anecdotes.find(a => a.id === id)
 
   const vote = (id) => {
     const anecdote = anecdoteById(id)
@@ -135,11 +143,25 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+  const Notification = ({ notification }) => {
+    console.log(notification)
+    if(notification) {
+      return (
+        <div className='notificaiton' >
+          {notification}
+        </div>
+      )
+    } else {
+      return null
+    }
+  }
+
   return (
     <div className='App'>
       <main>
         <h1>Software anecdotes</h1>
         <Menu />
+        <Notification notification={notification} />
         <Routes>
           <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
           <Route path="/create" element={<CreateNew addNew={addNew} />} />
