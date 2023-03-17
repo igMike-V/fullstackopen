@@ -64,11 +64,21 @@ const CreateNew = (props) => {
       votes: 0
     })
   }
+  const handleReset = (e) => {
+    e.preventDefault()
+    const fields = [
+      content,
+      author,
+      info
+    ]
+
+    fields.forEach(field => field.reset())
+  }
 
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className='input-container'>
           <span>content</span>
           <input {...content} />
@@ -81,7 +91,8 @@ const CreateNew = (props) => {
           <span>url for more info</span>
           <input {...info} />
         </div >
-        <button>create</button>
+        <button onClick={(event) => handleSubmit(event)}>create</button>
+        <button onClick={(event) => handleReset(event)}>reset</button>
       </form>
     </div>
   )
@@ -145,7 +156,6 @@ const App = () => {
   }
 
   const Notification = ({ notification }) => {
-    console.log(notification)
     if(notification) {
       return (
         <div className='notificaiton' >
