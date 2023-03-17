@@ -49,6 +49,13 @@ const Footer = () => (
   </footer>
 )
 
+// Custom component to remove reset attribute from field
+const InputField = ({ reset, ...rest }) => {
+  return (
+    <input {...rest} />
+  )
+}
+
 const CreateNew = (props) => {
   const content = useField('text')
   const author = useField('text')
@@ -64,6 +71,7 @@ const CreateNew = (props) => {
       votes: 0
     })
   }
+  
   const handleReset = (e) => {
     e.preventDefault()
     const fields = [
@@ -74,22 +82,22 @@ const CreateNew = (props) => {
 
     fields.forEach(field => field.reset())
   }
-
+  
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form>
         <div className='input-container'>
           <span>content</span>
-          <input {...content} />
+          <InputField { ...content } />
         </div>
         <div className='input-container'>
           <span>author</span>
-          <input {...author} />
+          <InputField {...author} />
         </div>
         <div className='input-container'>
           <span>url for more info</span>
-          <input {...info} />
+          <InputField {...info} />
         </div >
         <button onClick={(event) => handleSubmit(event)}>create</button>
         <button onClick={(event) => handleReset(event)}>reset</button>
