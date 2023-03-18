@@ -1,0 +1,42 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "content": "custom hooks are awesome"
+    },
+    {
+      "id": 2,
+      "content": "best feature ever <3"
+    },
+    {
+      "content": "New Note",
+      "id": 3
+    },
+    {
+      "content": "Ohhhh a note",
+      "id": 4
+    }
+  ],
+  "persons": [
+    {
+      "id": 1,
+      "name": "Matti Luukkainen",
+      "number": "040-12344565"
+    },
+    {
+      "id": 2,
+      "name": "Tarja Halonen",
+      "number": "040-2223334"
+    },
+    {
+      "name": "My name",
+      "number": "9009823443",
+      "id": 3
+    },
+    {
+      "name": "Mike Vautour",
+      "number": "9059059003",
+      "id": 4
+    }
+  ]
+}
