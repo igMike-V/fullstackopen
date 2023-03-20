@@ -1,5 +1,6 @@
 {
     "editor.detectIndentation": true,
     "editor.tabSize": 2,
-    "files.eol": "\n"
+    "files.eol": "\n",
+    "cSpell.language": "en,en-GB"
 }
