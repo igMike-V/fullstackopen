@@ -1,0 +1,78 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: rgb(207, 207, 207);
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+h1, h2 {
+  padding-top: 1em;
+  padding-bottom: .75em;
+}
+
+.App {
+  max-width: 700px;
+  margin: 0px auto;
+  background-color: white;
+  padding:2em;
+}
+
+.notification {
+  background: rgb(224, 224, 224);
+  font-size: 20px;
+  border-style: solid 2ps black;
+  border-radius: 5px;
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin: .25em 0;
+}
+
+.notice {
+  color: rgba(0, 151, 40, 0.911);
+  background-color: rgb(178, 247, 108);
+}
+
+.error {
+  color: rgb(144, 0, 0);
+  background: rgb(255, 113, 113);
+}
+
+.blog-details {
+  padding: .3125em 0 .5em .5em;
+}
+
+.blogs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  
+  padding-top: 20px;
+}
