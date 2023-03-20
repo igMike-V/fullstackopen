@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import loginService from '../services/login'
+import { setNotification } from '../reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 //import blogService from '../services/blogs'
 import formService from '../utilities/forms'
-import PropTypes from 'prop-types'
 
-const LoginForm = ({ setUser, setNotification }) => {
+const LoginForm = ({ setUser }) => {
   // State for controlled form elements
   const [userForm, setUserForm] = useState({
     username: '',
     password: '',
   })
 
+  const dispatch = useDispatch()
+
   const handleLogin = async (event) => {
-    console.log(userForm)
     event.preventDefault()
     const { username, password } = userForm
     try {
@@ -28,7 +30,7 @@ const LoginForm = ({ setUser, setNotification }) => {
       formService.resetForm(setUserForm)
 
     } catch(err) {
-      setNotification({ message: 'Wrong username or password', type: 'error' })
+      dispatch(setNotification('Wrong username or password', 'error', 5))
     }
   }
 
@@ -61,8 +63,4 @@ const LoginForm = ({ setUser, setNotification }) => {
   )
 }
 
-LoginForm.propTypes = {
-  setUser: PropTypes.func.isRequired,
-  setNotification: PropTypes.func.isRequired
-}
 export default LoginForm

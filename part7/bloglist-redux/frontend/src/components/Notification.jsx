@@ -1,7 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import { useSelector } from "react-redux"
 
-const Notification = ({ notification }) => {
+const Notification = () => {
+  const notification = useSelector((state) => {
+    return state.notification
+  })
 
   if (notification === null){
     return null
@@ -16,10 +18,6 @@ const Notification = ({ notification }) => {
       {notification.message}
     </div>
   )
-}
-
-Notification.propTypes = {
-  notification: PropTypes.object
 }
 
 export default Notification

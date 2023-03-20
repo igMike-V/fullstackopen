@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 
 // Services
 import blogService from './services/blogs'
@@ -11,20 +12,15 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Toggle from './components/Toggle'
 
+import { setNotification } from './reducers/notificationReducer'
+
 
 
 const App = () => {
+
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
-
-  useEffect(() => {
-    if(notification !== null){
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
-    }
-  }, [notification])
+  const dispatch = useDispatch()
 
   useEffect(() => {
     // Get logged in from storage
@@ -49,12 +45,13 @@ const App = () => {
   }, [user])
 
   const handleLike = async (blog) => {
-    try{
+    try {
       const response = await blogService.update({ ...blog, user: blog.user.id, likes: (blog.likes + 1) }, blog.id)
-      setNotification({ message: `Like logged for ${response.title}`, type: 'notice' })
+      dispatch(setNotification(`Like logged for ${response.title}`, 'notice', 5))
       updateLikes(response.id, response.likes)
     } catch (error) {
-      setNotification({ message: 'Somthing went wrong try again later', type: 'error' })
+      console.log('there was an error')
+      dispatch(setNotification({ message: 'Something went wrong try again later', type: 'error' }))
     }
   
   }
@@ -98,10 +95,10 @@ const App = () => {
       setBlogs(prevBlogs => {
         return [...prevBlogs, response]
       })
-      setNotification({ message: `a new blog: ${response.title} by ${response.author} added`, type: 'notice' })
+      dispatch(setNotification(`a new blog: ${response.title} by ${response.author} added`, 'notice', 5))
       return true
     } catch (error) {
-      setNotification({ message: 'Error, could not add blog, check all inputs and try again.', type: 'error' })
+      dispatch(setNotification('Error, could not add blog, check all inputs and try again.', 'error', 5))
       return false
     }
   }
@@ -109,10 +106,10 @@ const App = () => {
   return (
     <div className='App'>
       { user && <h1>blogs</h1> }
-      <Notification notification={notification}/>
+      <Notification />
       {!user && <h1>Log in to application</h1> }
-      {!user && <LoginForm setUser={setUser} setNotification={setNotification} /> }
-      { user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, setNotification)}>logout</button></p> }
+      {!user && <LoginForm setUser={setUser} /> }
+      { user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</button></p> }
 
       { user && <Toggle buttonLabel="New Blog" buttonClass="blog-form" ref={blogFormRef}>
         <BlogForm createBlog={createBlog} blogFormRef={blogFormRef} />
@@ -121,7 +118,7 @@ const App = () => {
       { user &&
         <div className='blogs'>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} setNotification={setNotification} handleLike={handleLike} user={user} removeBlogFromState={removeBlogFromState} />
+            <Blog key={blog.id} blog={blog} handleLike={handleLike} user={user} removeBlogFromState={removeBlogFromState} />
           )}
         </div>
       }

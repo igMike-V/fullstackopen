@@ -1,15 +1,17 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 
 
-const Blog = ({ blog, setNotification, user, removeBlogFromState, handleLike }) => {
+const Blog = ({ blog, user, removeBlogFromState, handleLike }) => {
   const [blogVisible, setBlogVisible] = useState(false)
+  const dispatch = useDispatch()
 
   const removeBlog = async () => {
     if(window.confirm(`Remove blog: ${blog.title} by ${blog.author}?`)) {
       await blogService.remove(blog.id)
-      setNotification({ message: `Removed Blog: ${blog.title}`, type: 'notice' })
+      dispatch(setNotification(`Removed Blog: ${blog.title}`, 'notice', 5))
       removeBlogFromState(blog.id)
     }
 
@@ -29,12 +31,6 @@ const Blog = ({ blog, setNotification, user, removeBlogFromState, handleLike }) 
     </div>
   )
 }
-/* Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  setNotification: PropTypes.func.isRequired,
-  handleLike: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  removeBlogFromState: PropTypes.func.isRequired
-} */
+
 
 export default Blog
