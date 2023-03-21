@@ -26,7 +26,7 @@ const LoginForm = ({ setUser }) => {
         'loggedInBlogAppUser', JSON.stringify(userData)
       )
       //blogService.setToken(userData.token)
-      setUser(userData)
+      dispatch(setUser(userData))
       formService.resetForm(setUserForm)
 
     } catch(err) {
