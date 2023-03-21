@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+
 
 // Services
 import blogService from './services/blogs'
@@ -12,16 +13,25 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Toggle from './components/Toggle'
 
+// Reducers
 import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs, updateLikes } from './reducers/blogReducer'
 
 
 
 const App = () => {
-
-  const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
   const dispatch = useDispatch()
 
+  // Create a selector for blogs in redux store and sort by likes
+  const blogs = useSelector(state => {
+    const blogsCopy = [...state.blogs]
+    return blogsCopy.sort((a, b) => {
+        return b.likes - a.likes
+      })
+  })
+
+  const [user, setUser] = useState(null)
+  
   useEffect(() => {
     // Get logged in from storage
     const loggedInUserJSON = window.localStorage.getItem('loggedInBlogAppUser')
@@ -31,10 +41,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
     // Get blogs
-    blogService.getAll().then(blogs => {
-      setBlogs( blogs )
-      sortBlogs()
-    })
+    dispatch(initializeBlogs())
   }, [])
 
   useEffect(() => {
@@ -43,65 +50,9 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [user])
-
-  const handleLike = async (blog) => {
-    try {
-      const response = await blogService.update({ ...blog, user: blog.user.id, likes: (blog.likes + 1) }, blog.id)
-      dispatch(setNotification(`Like logged for ${response.title}`, 'notice', 5))
-      updateLikes(response.id, response.likes)
-    } catch (error) {
-      console.log('there was an error')
-      dispatch(setNotification({ message: 'Something went wrong try again later', type: 'error' }))
-    }
   
-  }
-
-  // Updates likes in state
-  const updateLikes = (id, likes) => {
-    setBlogs(prevBlogs => {
-      return prevBlogs.map(blogObj => {
-        if(blogObj.id === id) {
-          return { ...blogObj, likes }
-        } else {
-          return { ...blogObj }
-        }
-      })
-    })
-    sortBlogs()
-  }
-
-  const sortBlogs = () => {
-    setBlogs(prevBlogs => {
-      return prevBlogs.sort((a, b) => {
-        return b.likes - a.likes
-      })
-    })
-  }
-  
-  const removeBlogFromState = (id) => {
-    setBlogs(prevBlogs => {
-      return prevBlogs.filter(blogObj => id !== blogObj.id)
-    })
-  }
 
   const blogFormRef = useRef()
-
-  const createBlog = async (blogObject) => {
-    try {
-      const response = await blogService.create(blogObject)
-      response.user = {
-        name: user.name
-      }
-      setBlogs(prevBlogs => {
-        return [...prevBlogs, response]
-      })
-      dispatch(setNotification(`a new blog: ${response.title} by ${response.author} added`, 'notice', 5))
-      return true
-    } catch (error) {
-      dispatch(setNotification('Error, could not add blog, check all inputs and try again.', 'error', 5))
-      return false
-    }
-  }
 
   return (
     <div className='App'>
@@ -112,13 +63,16 @@ const App = () => {
       { user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</button></p> }
 
       { user && <Toggle buttonLabel="New Blog" buttonClass="blog-form" ref={blogFormRef}>
-        <BlogForm createBlog={createBlog} blogFormRef={blogFormRef} />
+        <BlogForm blogFormRef={blogFormRef} />
       </Toggle>
       }
       { user &&
         <div className='blogs'>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} handleLike={handleLike} user={user} removeBlogFromState={removeBlogFromState} />
+          {blogs.map(blog => {
+            return (
+              <Blog key={blog.id} blog={blog} user={user} />
+            )
+          }
           )}
         </div>
       }

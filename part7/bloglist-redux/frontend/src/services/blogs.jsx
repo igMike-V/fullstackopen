@@ -15,9 +15,24 @@ const create = async newObject => {
   const config = {
     headers: { Authorization: token },
   }
-
   const response = await axios.post(baseUrl, newObject, config)
-  return response.data
+  const returnBlog = await axios.get(`${baseUrl}/${response.data.id}`)
+  return returnBlog.data
+}
+
+const addLike = async id => {
+  const updateUrl = `${baseUrl}/${id}`
+  const query = await axios.get(updateUrl)
+  const newBlog = {
+    "user": query.data.user.id,
+    "likes": query.data.likes + 1,
+    "author": query.data.author,
+    "title": query.data.title,
+    "url": query.data.url
+  }
+  await axios.put(updateUrl, newBlog)
+  const returnQuery = await axios.get(updateUrl)
+  return returnQuery.data
 }
 
 const update = async (newObject, id) => {
@@ -40,4 +55,4 @@ const remove = async (id) => {
   return response
 }
 
-export default { getAll, setToken, create, update, remove }
+export default { getAll, setToken, create, update, remove, addLike }

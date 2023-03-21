@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
 import formService from '../utilities/forms'
-import blogService from '../services/blogs'
-import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+
+import { addBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 // section 5.6 update (already done)
-const BlogForm = ({ blogFormRef, createBlog }) => {
+const BlogForm = ({ blogFormRef }) => {
+  const dispatch = useDispatch()
   // State for controlled form elements
   const [blogForm, setBlogForm] = useState({
     title: '',
     author: '',
     url: '',
   })
+
 
   const resetForm = () => {
     setBlogForm({
@@ -19,20 +23,25 @@ const BlogForm = ({ blogFormRef, createBlog }) => {
     })
   }
 
-  const addBlog = async (event) => {
+
+  const handleAddBlog = async (event) => {
     event.preventDefault()
     const blogObject = { ...blogForm }
-    const response = await createBlog(blogObject)
-    if(response) {
+    try {
+      dispatch(addBlog(blogObject))
       resetForm()
       blogFormRef.current.toggleVisibility()
+      dispatch(setNotification(`a new blog: ${blogObject.title} by ${blogObject.author} added`, 'notice', 5))
+    } catch (error) {
+      console.error(error)
+      dispatch(setNotification('Error, could not add blog, check all inputs and try again.', 'error', 5))
     }
   }
 
   return (
     <div className="blog-form">
       <h2>Create new:</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={handleAddBlog}>
         <div>
         title:
           <input
@@ -67,10 +76,6 @@ const BlogForm = ({ blogFormRef, createBlog }) => {
       </form>
     </div>
   )
-}
-
-BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm
