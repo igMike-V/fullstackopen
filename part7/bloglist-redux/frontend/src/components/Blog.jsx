@@ -1,21 +1,31 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
+import { updateLikes, removeBlog } from '../reducers/blogReducer'
 
 
-const Blog = ({ blog, user, removeBlogFromState, handleLike }) => {
+const Blog = ({ blog, user }) => {
   const [blogVisible, setBlogVisible] = useState(false)
   const dispatch = useDispatch()
 
-  const removeBlog = async () => {
+  const handleRemoveBlog = () => {
     if(window.confirm(`Remove blog: ${blog.title} by ${blog.author}?`)) {
-      await blogService.remove(blog.id)
+      dispatch(removeBlog(blog.id))
       dispatch(setNotification(`Removed Blog: ${blog.title}`, 'notice', 5))
-      removeBlogFromState(blog.id)
     }
-
   }
+
+  
+  const handleLike = (id) => {
+    try {
+      dispatch(updateLikes(id))
+      dispatch(setNotification(`Like logged for ${blog.title}`, 'notice', 5))
+    } catch (error) {
+      console.log('there was an error', error)
+      dispatch(setNotification({ message: 'Something went wrong try again later', type: 'error' }))
+    }
+  }
+
 
   return (
     <div className='blog'>
@@ -23,9 +33,9 @@ const Blog = ({ blog, user, removeBlogFromState, handleLike }) => {
       {blogVisible &&
         <div className='blog-details'>
           <p>{blog.url}</p>
-          <p>likes: {blog.likes} <button className="like-button" onClick={() => handleLike(blog)}>like</button></p>
+          <p>likes: {blog.likes} <button className="like-button" onClick={() => handleLike(blog.id)}>like</button></p>
           <p>{blog.user.name}</p>
-          {user.name === blog.user.name && <button className='remove-button' onClick={removeBlog}>remove</button>}
+          {user.name === blog.user.name && <button className='remove-button' onClick={handleRemoveBlog}>remove</button>}
         </div>
       }
     </div>
