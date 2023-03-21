@@ -54,7 +54,6 @@ export const removeBlog = id => {
 export const addBlog = (newBlogObject) => {
   return async dispatch => {
     const newBlog = await blogsService.create(newBlogObject)
-    console.log(newBlog)
     dispatch(appendBlog(newBlog))
   }
 }

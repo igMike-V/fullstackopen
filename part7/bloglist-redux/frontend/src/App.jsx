@@ -14,8 +14,8 @@ import Notification from './components/Notification'
 import Toggle from './components/Toggle'
 
 // Reducers
-import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, updateLikes } from './reducers/blogReducer'
+import { initializeBlogs } from './reducers/blogReducer'
+import { setUser } from './reducers/userReducer'
 
 
 
@@ -30,15 +30,19 @@ const App = () => {
       })
   })
 
-  const [user, setUser] = useState(null)
+  const user = useSelector(state => {
+    return state.user
+  })
+
+  //const [user, setUser] = useState(null)
   
   useEffect(() => {
     // Get logged in from storage
     const loggedInUserJSON = window.localStorage.getItem('loggedInBlogAppUser')
     if(loggedInUserJSON) {
-      const user = JSON.parse(loggedInUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      const storedUser = JSON.parse(loggedInUserJSON)
+      dispatch(setUser(storedUser))
+      blogService.setToken(storedUser.token)
     }
     // Get blogs
     dispatch(initializeBlogs())
