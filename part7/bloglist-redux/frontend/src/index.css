@@ -106,5 +106,6 @@ ul {
 
 .nav-menu button{
   background-color: rgb(224, 255, 157);
-  padding: .1em .25em;
+  padding: .25em .5em;
+  font-size: 1em;
 }
