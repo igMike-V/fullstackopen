@@ -1,17 +1,18 @@
 import React from "react"
+import { useSelector } from "react-redux"
 
-import Blogs from "./Blogs"
+const Home = () => {
+  const user = useSelector(state => {
+    return state.user
+  })  
 
-const Home = ({ user, blogs }) => {
+  if (!user.success) { return null } 
 
-  if (user) {
-      return (
-      <section className="home">
-        <Blogs user={user} blogs={blogs} />
-      </section>
-    )
-  }
-  return null
+  return (
+    <section className="home">
+      Home
+    </section>
+  )
   
 }
 

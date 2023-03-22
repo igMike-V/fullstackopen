@@ -15,7 +15,7 @@ import loginService from './services/login'
 import Users from './components/Users'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import Home from './components/Home'
+import Blogs from './components/Blogs'
 import PrivateRoutes from './components/PrivateRoutes'
 import User from './components/User'
 
@@ -24,6 +24,7 @@ import User from './components/User'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { setUser } from './reducers/userReducer'
+import SingleBlog from './components/SingleBlog'
 
 
 
@@ -75,8 +76,9 @@ const App = () => {
         <Route element={<PrivateRoutes />}>
           <Route path="/users" exact element={<Users />} />
           <Route path="/users/:id" element={<User />} />
+          <Route path="/blogs/:id" element={<SingleBlog />} />
         </Route>
-        <Route path="/" exact element={<Home user={user} blogs={blogs} />} /> 
+        <Route path="/" exact element={<Blogs />} /> 
       </Routes>
       
     </div>
