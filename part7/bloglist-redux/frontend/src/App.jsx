@@ -1,5 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import {
+  Routes,
+  Route,
+  Navigate
+} from 'react-router-dom'
 
 
 // Services
@@ -7,14 +12,17 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 // Components
-import Blog from './components/Blog'
+import Users from './components/Users'
 import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
-import Toggle from './components/Toggle'
+import Home from './components/Home'
+import PrivateRoutes from './components/PrivateRoutes'
+import User from './components/User'
+
 
 // Reducers
 import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import { setUser } from './reducers/userReducer'
 
 
@@ -30,7 +38,7 @@ const App = () => {
       })
   })
 
-  const user = useSelector(state => {
+  const {user} = useSelector(state => {
     return state.user
   })
 
@@ -46,6 +54,7 @@ const App = () => {
     }
     // Get blogs
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [])
 
   useEffect(() => {
@@ -55,31 +64,21 @@ const App = () => {
     }
   }, [user])
   
-
-  const blogFormRef = useRef()
-
   return (
     <div className='App'>
       { user && <h1>blogs</h1> }
       <Notification />
-      {!user && <h1>Log in to application</h1> }
-      {!user && <LoginForm setUser={setUser} /> }
-      { user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</button></p> }
-
-      { user && <Toggle buttonLabel="New Blog" buttonClass="blog-form" ref={blogFormRef}>
-        <BlogForm blogFormRef={blogFormRef} />
-      </Toggle>
-      }
-      { user &&
-        <div className='blogs'>
-          {blogs.map(blog => {
-            return (
-              <Blog key={blog.id} blog={blog} user={user} />
-            )
-          }
-          )}
-        </div>
-      }
+      {!user && <h1>Log in to application</h1>}
+      {!user && <LoginForm setUser={setUser} />}
+      {user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</button></p>}
+      <Routes>
+        <Route element={<PrivateRoutes />}>
+          <Route path="/users" exact element={<Users />} />
+          <Route path="/users/:id" element={<User />} />
+        </Route>
+        <Route path="/" exact element={<Home user={user} blogs={blogs} />} /> 
+      </Routes>
+      
     </div>
   )
 }

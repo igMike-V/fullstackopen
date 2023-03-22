@@ -1,12 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit"
-import userService from '../services/login'
+
+const initialState = {
+  user: null,
+  success: false
+}
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: null,
+  initialState,
   reducers: {
-    setUser(state, action) {
-      return action.payload
+    setUser(state, { payload }) {
+      state.user = payload
+      state.success = true
     }
   }
 })
