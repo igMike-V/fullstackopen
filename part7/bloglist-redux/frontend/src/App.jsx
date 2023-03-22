@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   Routes,
   Route,
-  Navigate
+  Link
 } from 'react-router-dom'
 
 
@@ -67,11 +67,16 @@ const App = () => {
   
   return (
     <div className='App'>
-      { user && <h1>blogs</h1> }
+      <nav className='nav-menu'>
+        <Link>Blogs</Link>
+        <Link>Users</Link>
+        {user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</button></p>}
+      </nav>
+      <h1>Blog App</h1>
       <Notification />
       {!user && <h1>Log in to application</h1>}
       {!user && <LoginForm setUser={setUser} />}
-      {user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</button></p>}
+      
       <Routes>
         <Route element={<PrivateRoutes />}>
           <Route path="/users" exact element={<Users />} />
