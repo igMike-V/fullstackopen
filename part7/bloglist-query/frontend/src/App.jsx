@@ -108,7 +108,7 @@ const App = () => {
 
   return (
     <div className='App'>
-      { user && <h1>blogs</h1> }
+      { user && <h1>Blogs Query/Context</h1> }
       <Notification notification={notification}/>
       {!user && <h1>Log in to application</h1> }
       {!user && <LoginForm setUser={setUser} setNotification={setNotification} /> }
