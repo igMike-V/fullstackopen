@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux'
 //import blogService from '../services/blogs'
 import formService from '../utilities/forms'
 
+import {Form, Button} from 'react-bootstrap'
+
 const LoginForm = ({ setUser }) => {
   // State for controlled form elements
   const [userForm, setUserForm] = useState({
@@ -36,10 +38,11 @@ const LoginForm = ({ setUser }) => {
 
   return (
     <div className="login-form">
-      <form onSubmit={handleLogin}>
+      <h3>Log in to application</h3>
+      <Form onSubmit={handleLogin}>
         <div>
-        Username:
-          <input
+        <Form.Label>Username:</Form.Label>
+          <Form.Control
             type="text"
             value={userForm.username}
             name="username"
@@ -48,8 +51,8 @@ const LoginForm = ({ setUser }) => {
           />
         </div>
         <div>
-        Password:
-          <input
+        <Form.Label>Password:</Form.Label>
+          <Form.Control
             type="password"
             value={userForm.password}
             name="password"
@@ -57,8 +60,10 @@ const LoginForm = ({ setUser }) => {
             onChange={(event) => formService.formHandler(setUserForm, event)}
           />
         </div>
-        <button id='login-button' type="submit">login</button>
-      </form>
+        <Button variant="primary" id='login-button' type="submit">
+          login
+        </Button>
+      </Form>
     </div>
   )
 }
