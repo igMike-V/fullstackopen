@@ -23,16 +23,40 @@ const create = async newObject => {
 const addLike = async id => {
   const updateUrl = `${baseUrl}/${id}`
   const query = await axios.get(updateUrl)
-  const newBlog = {
+  const updatedBlog = {
     "user": query.data.user.id,
     "likes": query.data.likes + 1,
     "author": query.data.author,
     "title": query.data.title,
     "url": query.data.url
   }
-  await axios.put(updateUrl, newBlog)
+  await axios.put(updateUrl, updatedBlog)
   const returnQuery = await axios.get(updateUrl)
   return returnQuery.data
+}
+
+const addComment = async (id, newComment) => {
+  
+  const updateUrl = `${baseUrl}/${id}`
+  // Get blog from db
+  const query = await axios.get(updateUrl)
+  // Append new comment
+  let updatedComments = []
+  if (query.data.comments) {
+    updatedComments = query.data.comments.concat(newComment)
+  } else {
+    updatedComments = [newComment] 
+  }
+  const updatedBlog = {
+    ...query,
+    comments: updatedComments
+  }
+  // Put appended blog to db
+  axios.put(updateUrl, updatedBlog)
+  // Re-query blog for return
+  const returnQuery = await axios.get(updateUrl)
+  return returnQuery.data
+  
 }
 
 const update = async (newObject, id) => {
@@ -55,4 +79,4 @@ const remove = async (id) => {
   return response
 }
 
-export default { getAll, setToken, create, update, remove, addLike }
+export default { getAll, setToken, create, update, remove, addLike, addComment }
