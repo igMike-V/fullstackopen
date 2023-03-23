@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import { addBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Form, Button } from 'react-bootstrap'
 // section 5.6 update (already done)
 const BlogForm = ({ blogFormRef }) => {
   const dispatch = useDispatch()
@@ -40,11 +41,11 @@ const BlogForm = ({ blogFormRef }) => {
 
   return (
     <div className="blog-form">
-      <h2>Create new:</h2>
-      <form onSubmit={handleAddBlog}>
+      <h5>Create new:</h5>
+      <Form onSubmit={handleAddBlog}>
         <div>
         title:
-          <input
+          <Form.Control
             type="text"
             value={blogForm.title}
             name="title"
@@ -54,7 +55,7 @@ const BlogForm = ({ blogFormRef }) => {
         </div>
         <div>
         Author:
-          <input
+          <Form.Control
             type="text"
             value={blogForm.author}
             name="author"
@@ -64,7 +65,7 @@ const BlogForm = ({ blogFormRef }) => {
         </div>
         <div>
         url:
-          <input
+          <Form.Control
             type="text"
             value={blogForm.url}
             name="url"
@@ -72,8 +73,8 @@ const BlogForm = ({ blogFormRef }) => {
             onChange={(event) => formService.formHandler(setBlogForm, event)}
           />
         </div>
-        <button id='new-blog-button' type="submit">Create</button>
-      </form>
+        <Button id='new-blog-button' type="submit">Create</Button>
+      </Form>
     </div>
   )
 }

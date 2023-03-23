@@ -3,6 +3,7 @@ import formService from '../utilities/forms'
 import { useDispatch } from "react-redux"
 import { setNotification } from "../reducers/notificationReducer"
 import { addComment } from "../reducers/blogReducer"
+import {Form, Button} from 'react-bootstrap'
 
 const CommentForm = ({id}) => {
   const dispatch = useDispatch()
@@ -13,7 +14,7 @@ const CommentForm = ({id}) => {
     event.preventDefault()
     if (commentForm.comment.length > 3) {
       dispatch(addComment(id, commentForm.comment))
-      dispatch(setNotification(`added comment: ${commentForm.comment}`, 'info', 5))
+      dispatch(setNotification(`added comment: ${commentForm.comment}`, 'info', 30))
       formService.resetForm(setCommentForm)      
     } else {
       dispatch(setNotification(`Opps... your comment: "${commentForm.comment}" is too short. Minium length is 3 characters`, 'error', 5))
@@ -23,9 +24,9 @@ const CommentForm = ({id}) => {
 
   return (
     <div className="comment-form">
-      <form onSubmit={handleComment}>
+      <Form onSubmit={handleComment}>
         <div>
-          <input 
+          <Form.Control 
             type="text"
             value={commentForm.comment}
             name="comment"
@@ -33,8 +34,8 @@ const CommentForm = ({id}) => {
             onChange={(event) => formService.formHandler(setCommentForm, event)}
           />
         </div>
-        <button id='new-blog-comment-button' type="submit">add comment</button>
-      </form>
+        <Button variant="primary" id='new-blog-comment-button' type="submit">add comment</Button>
+      </Form>
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { updateLikes } from '../reducers/blogReducer'
 import { setNotification } from "../reducers/notificationReducer"
 import CommentForm from "./CommentForm"
+import {Table, Button} from 'react-bootstrap'
 
 const SingleBlog = () => {
   const { id } = useParams()
@@ -29,21 +30,37 @@ const SingleBlog = () => {
 
   return (
     <section className="single-blog">
-      <h2>{`${blog.title} | ${blog.author}`}</h2>
-      <Link to={`${blog.url}`} >{blog.url}</Link>
-      <div className="blog-likes">
-        {`${blog.likes} likes`}
-        <button className="like-button" onClick={() => handleLike(blog.id)}>like</button>
+      <div className="container">
+        <h2 className="single-blog--title">{`${blog.title} | ${blog.author}`}</h2>
+        <div className="blog-user">{`added by ${blog.user.name}`}</div>
+        Visit Blog: <Link className="single-blog--link" to={`${blog.url}`} >{blog.url}</Link>
       </div>
-      <div className="blog-user">{`added by ${blog.user.name}`}</div>
-      {blog.comments && <h3>Comments</h3>}
-      {blog.comments && <CommentForm id={blog.id} />}
-      {blog.comments &&
-        <ul className="blog-comments">
-        {blog.comments.map((comment, index) => {
-          return ( <li key={index} className="blogs-comment">{comment}</li> )
-        })}
-      </ul>}
+      <div className="container">
+        <div className="blog-likes">
+          {`${blog.likes} likes`}
+          <Button className="like-button" onClick={() => handleLike(blog.id)}>like</Button>
+        </div>        
+      </div>
+      <div className="container">
+        {blog.comments && <h3>Comments</h3>}
+        {blog.comments && <CommentForm id={blog.id} />}
+        {blog.comments &&
+          <Table>
+            <tbody>
+            {
+              blog.comments.map((comment, index) => {
+                return (
+                  <tr key={index} className="blogs-comment">
+                    <td>
+                      {comment}
+                    </td>
+                  </tr>)
+              })
+              }
+              </tbody>
+          </Table>
+        }
+      </div>
     </section>
   )
 }

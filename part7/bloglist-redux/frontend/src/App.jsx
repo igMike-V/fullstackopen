@@ -26,6 +26,8 @@ import { initializeUsers } from './reducers/usersReducer'
 import { setUser } from './reducers/userReducer'
 import SingleBlog from './components/SingleBlog'
 
+import { Button } from 'react-bootstrap'
+
 
 
 const App = () => {
@@ -67,19 +69,18 @@ const App = () => {
   
   return (
     <div className='App'>
+      <div className='container'>
       <nav className='nav-menu'>
-        <div className="nav-menu--left">
-          <Link to="/">Blogs</Link>
-          <Link to="/users">Users</Link>
+          <div className="nav-menu--left">
+          BLOGAPP
+          <Link className='text-info' to="/">Blogs</Link>
+          <Link className='text-info' to="/users">Users</Link>
         </div>
         <div className="nav-menu--right">
-           {user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</button></p>}
-        </div>
-        
-          </nav>
-      <h1>Blog App</h1>
+           {user && <p>{user.name} is logged in. <Button variant='info' id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</Button></p>}
+        </div>  
+      </nav>  
       <Notification />
-      {!user && <h1>Log in to application</h1>}
       {!user && <LoginForm setUser={setUser} />}
       
       <Routes>
@@ -90,7 +91,7 @@ const App = () => {
         </Route>
         <Route path="/" exact element={<Blogs />} /> 
       </Routes>
-      
+      </div>
     </div>
   )
 }

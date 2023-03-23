@@ -41,6 +41,10 @@ button {
   padding: .25em .5em;
 }
 
+a {
+  color: #0093b1;
+}
+
 .App {
   width: 700px;
   margin: 0px auto;
@@ -49,11 +53,12 @@ button {
 }
 
 .notification {
+  margin: 0;
+  padding: 0;
   background: rgb(224, 224, 224);
   font-size: 20px;
   border-style: solid 2ps black;
   border-radius: 5px;
-  width: 90%;
   padding: 10px;
   margin-bottom: 10px;
   margin: .25em 0;
@@ -62,6 +67,11 @@ button {
 .notice {
   color: rgba(0, 151, 40, 0.911);
   background-color: rgb(178, 247, 108);
+}
+
+.info {
+  color: rgba(87, 87, 87, 0.911);
+  background-color: rgb(210, 210, 210);
 }
 
 .error {
@@ -73,6 +83,12 @@ button {
   padding: .3125em 0 .5em .5em;
 }
 
+.blog-likes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+}
 .blogs {
   display: flex;
   flex-direction: column;
@@ -92,6 +108,10 @@ button {
   font-weight: 800;
 }
 
+.blog-user {
+  padding-bottom: 1em ;
+}
+
 ul {
   padding-left: 2em;
 }
@@ -99,26 +119,28 @@ ul {
 .nav-menu {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: .5em;
   background-color: rgb(24, 17, 11);
   padding: .5em;
   color: white;
+  margin: 0 0 2em 0;
 }
 .nav-menu--right, .nav-menu--left {
   display: flex;
+  align-items: center;
   gap:.5em;
 }
-.nav-menu a{
-  color: rgb(224, 255, 157);
+.nav-menu p {
+  margin: 0;
+  
 }
 
-.nav-menu button{
-  background-color: rgb(224, 255, 157);
-  padding: .25em .5em;
-  font-size: 1em;
-  cursor: pointer;
+.login-form form, .blog-form form{
+  display: flex;
+  flex-direction: column;
+  gap:1em;
 }
-
 .comment-form form{
   display: flex;
   flex-direction: row;
@@ -127,4 +149,13 @@ ul {
 
 .comment-form input {
   padding: .5em;
+}
+
+.single-blog--title{
+  margin: 0;
+  padding: 0;
+}
+
+.single-blog .container {
+  padding-bottom: 2em;
 }

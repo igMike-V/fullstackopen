@@ -20,16 +20,19 @@ const Users = () => {
   
   return (
     <section className="users">
-      <div className="users--heading">
-        <h2>Users</h2>
-      </div>
-      <div className="users--stats">
-        <div className="users--user-heading">
-          <div className="users--user-heading-name"></div>
-          <div className="users--user-heading-blogcount">blogs created</div>
+      <div className="container">
+        <div className="users--heading">
+          <h2>Users</h2>
         </div>
-        {userElements}
+        <div className="users--stats">
+          <div className="users--user-heading">
+            <div className="users--user-heading-name"></div>
+            <div className="users--user-heading-blogcount">blogs created</div>
+          </div>
+          {userElements}
+        </div>
       </div>
+      
     </section>
   )
 }
