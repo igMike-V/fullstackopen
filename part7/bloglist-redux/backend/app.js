@@ -32,6 +32,7 @@ app.use(middleware.tokenExtractor)
 app.use('/api/users', usersRouter)
 app.use('/api/blogs', middleware.userExtractor, blogsRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/blogs/:id/comments', blogsRouter)
 
 if (process.env.NODE_ENV === 'test') {
   console.log('loaded testing route, logging silenced')

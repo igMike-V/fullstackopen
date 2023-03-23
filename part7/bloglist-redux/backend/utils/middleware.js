@@ -46,10 +46,15 @@ const userExtractor = async (req, res, next) => {
   next()
 }
 
+const commentExtractor = async (req, res, next) => {
+  console.log(req)
+}
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
-  userExtractor
+  userExtractor,
+  commentExtractor
 }

@@ -37,6 +37,10 @@ h1, h2 {
   padding-bottom: .75em;
 }
 
+button {
+  padding: .25em .5em;
+}
+
 .App {
   width: 700px;
   margin: 0px auto;
@@ -94,12 +98,16 @@ ul {
 
 .nav-menu {
   display: flex;
+  justify-content: space-between;
   gap: .5em;
   background-color: rgb(24, 17, 11);
   padding: .5em;
   color: white;
 }
-
+.nav-menu--right, .nav-menu--left {
+  display: flex;
+  gap:.5em;
+}
 .nav-menu a{
   color: rgb(224, 255, 157);
 }
@@ -108,4 +116,15 @@ ul {
   background-color: rgb(224, 255, 157);
   padding: .25em .5em;
   font-size: 1em;
+  cursor: pointer;
+}
+
+.comment-form form{
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
+}
+
+.comment-form input {
+  padding: .5em;
 }

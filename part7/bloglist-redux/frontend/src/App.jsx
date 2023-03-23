@@ -68,10 +68,15 @@ const App = () => {
   return (
     <div className='App'>
       <nav className='nav-menu'>
-        <Link>Blogs</Link>
-        <Link>Users</Link>
-        {user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</button></p>}
-      </nav>
+        <div className="nav-menu--left">
+          <Link to="/">Blogs</Link>
+          <Link to="/users">Users</Link>
+        </div>
+        <div className="nav-menu--right">
+           {user && <p>{user.name} is logged in. <button id="logout-button" onClick={() => loginService.logout(user, setUser, dispatch)}>logout</button></p>}
+        </div>
+        
+          </nav>
       <h1>Blog App</h1>
       <Notification />
       {!user && <h1>Log in to application</h1>}

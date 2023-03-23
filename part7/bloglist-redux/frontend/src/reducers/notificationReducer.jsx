@@ -22,7 +22,7 @@ export const { addNotification, clearNotification } = notificationSlice.actions
  * @param   type  string type of message error or info.
  * @returns Promise
  */
-export const setNotification = (message, type, time) => {
+export const setNotification = (message, type, time = 5) => {
   
   const notice = { message, type }
   return async dispatch => {

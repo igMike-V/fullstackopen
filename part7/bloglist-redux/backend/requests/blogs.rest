@@ -11,8 +11,8 @@ Content-Type: application/json
 
 ### addLike
 
-PUT http://localhost:3003/api/blogs/63fd3ce4ca79186146eca5f9
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6IjYzZjYyZTA3YmQ2N2IyMjQ4YjI5OTZmOCIsImlhdCI6MTY3OTMyOTM3NiwiZXhwIjoxNjc5NTAyMTc2fQ.nmzLjxqMrL6tWKj1Sza3Krc_DKQ5aQguleb6i62Dgfw
+PUT http://localhost:3003/api/blogs/63fdac330d53ed86444ecd86
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6IjYzZjYyZTA3YmQ2N2IyMjQ4YjI5OTZmOCIsImlhdCI6MTY3OTUxNjEyMSwiZXhwIjoxNjc5Njg4OTIxfQ.C7hQafNgAx92_XTuKOR9lL86dd_RMeodHhqwSD0MRMY
 Content-Type: application/json
 
 {
@@ -20,7 +20,8 @@ Content-Type: application/json
     "likes": 1,
     "author": "author",
     "title": "title",
-    "url": "url"
+    "url": "url",
+    "comments": ["this is a comment", "this is another comment", "and a third comment"]
 }
 
 ### GET
@@ -33,4 +34,4 @@ GET http://localhost:3003/api/blogs/63ea7bbccc5acd2429c05665
 
 ### Delete entry
 DELETE http://localhost:3003/api/blogs/63fd3e22ca79186146eca601
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6IjYzZjYyZTA3YmQ2N2IyMjQ4YjI5OTZmOCIsImlhdCI6MTY3NzU0MDUzOSwiZXhwIjoxNjc3NzEzMzM5fQ.QJw6cSjhKQOr8M_BQhHOPSWIikCGvlfxHmOdaNZBs24
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6IjYzZjYyZTA3YmQ2N2IyMjQ4YjI5OTZmOCIsImlhdCI6MTY3OTUxNjEyMSwiZXhwIjoxNjc5Njg4OTIxfQ.C7hQafNgAx92_XTuKOR9lL86dd_RMeodHhqwSD0MRMY

@@ -24,7 +24,7 @@ const BlogForm = ({ blogFormRef }) => {
   }
 
 
-  const handleAddBlog = async (event) => {
+  const handleAddBlog = (event) => {
     event.preventDefault()
     const blogObject = { ...blogForm }
     try {

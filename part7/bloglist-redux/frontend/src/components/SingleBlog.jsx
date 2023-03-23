@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import { useDispatch } from 'react-redux'
 import { updateLikes } from '../reducers/blogReducer'
 import { setNotification } from "../reducers/notificationReducer"
+import CommentForm from "./CommentForm"
 
 const SingleBlog = () => {
   const { id } = useParams()
@@ -24,6 +25,8 @@ const SingleBlog = () => {
     }
   }
 
+  console.log(blog)
+
   return (
     <section className="single-blog">
       <h2>{`${blog.title} | ${blog.author}`}</h2>
@@ -32,7 +35,15 @@ const SingleBlog = () => {
         {`${blog.likes} likes`}
         <button className="like-button" onClick={() => handleLike(blog.id)}>like</button>
       </div>
-      <div className="blog-user">{ `added by ${blog.user.name}` }</div>
+      <div className="blog-user">{`added by ${blog.user.name}`}</div>
+      {blog.comments && <h3>Comments</h3>}
+      {blog.comments && <CommentForm id={blog.id} />}
+      {blog.comments &&
+        <ul className="blog-comments">
+        {blog.comments.map((comment, index) => {
+          return ( <li key={index} className="blogs-comment">{comment}</li> )
+        })}
+      </ul>}
     </section>
   )
 }
