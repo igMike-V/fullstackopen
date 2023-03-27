@@ -4,7 +4,7 @@ import { EDIT_BORN, ALL_AUTHORS } from '../queries'
 
 
 
-const BirthYearForm = () => {
+const BirthYearForm = ({authors}) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
 
@@ -19,16 +19,25 @@ const BirthYearForm = () => {
     setName('')
   }
 
+
   return (
       <div>
         <h2> Set Birthyear</h2>
       <form onSubmit={submit}>
         <div>
-          name <input
-            type="text"
+          <label>
+            name 
+          </label>
+          <select
+            name='name'
             value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
+            onChange={({ target }) => setName(target.value)}       
+          >
+            {authors.map(a => (
+                <option key={a.name} value={a.name}>{a.name}</option>
+              )
+            )}
+          </select>
         </div>
         <div>
           born <input
