@@ -1,12 +1,9 @@
-const Authors = (props) => {
-  if (!props.show) {
-    return null
-  }
+const Authors = () => {
   const authors = []
 
   return (
     <div>
-      <h2>authors</h2>
+      <h2>Authors</h2>
       <table>
         <tbody>
           <tr>
