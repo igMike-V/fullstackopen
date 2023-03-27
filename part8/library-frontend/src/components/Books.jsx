@@ -1,6 +1,16 @@
+import { useQuery } from '@apollo/client'
+import { ALL_BOOKS } from '../queries'
+
 const Books = () => {
 
-  const books = []
+  const result = useQuery(ALL_BOOKS)
+  
+  if (result.loading) {
+    return <div>loading...</div>
+  }
+  console.log(result)
+
+  const books = result.data.allBooks
 
   return (
     <div>
