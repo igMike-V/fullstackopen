@@ -5,7 +5,18 @@ module.exports = {
   Query: {
     bookCount: async () => await Book.collection.countDocuments(),
     authorCount: async () => await Author.collection.countDocuments(),
-    allBooks: async () => await Books.find({}),
+    allBooks: async (_, {author, genre}) => {
+      const bookReturn = await Book.find({})
+        .populate('author')
+      let filteredBooks = [...bookReturn]
+      if (author) {
+        filteredBooks = filteredBooks.filter(book => book.author.name === author)
+      }
+      if (genre) {
+        filteredBooks = filteredBooks.filter(book => book.genres.find(element => element === genre))
+      }
+      return filteredBooks
+    },
     allAuthors: async () => await Author.find({})
   },
   Mutation: {
