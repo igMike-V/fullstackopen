@@ -20,15 +20,30 @@ module.exports = {
       }
       return filteredBooks
     },
-    allAuthors: async () => await Author.find({})
+    allAuthors: async () => await Author.find({}),
+    me: (root, args, context) => {
+      return context.currentUser
+    }
   },
   Mutation: {
-    addBook: async (_, {title, author, published, genres, ...args}) => {
+    addBook: async (root, {title, author, published, genres, ...args}, context) => {
+      // get logged in user
+      const currentUser = context.currentUser
+      
+      if (!currentUser) {
+        throw new GraphQLError('not authenticated', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+          }
+        })
+      }
       // check for author
-      let authorRef = await Author.findOne({name: author})
+      let authorRef = await Author.findOne({ name: author })
+      console.log(authorRef)
       if(!authorRef) {
         // Create a new author
-        authorRef = new Author({name: author})
+        authorRef = new Author({ name: author, born: null })
+        console.log(authorRef)
         authorRef = await authorRef.save()
       }
 
@@ -41,7 +56,7 @@ module.exports = {
       })
       try {
         const savedBook = await book.save()
-        return savedBook
+        return Book.findById(savedBook._id).populate('author')
       } catch ( error ) {
         throw new GraphQLError('Saving book failed', {
           extensions: {
@@ -53,12 +68,23 @@ module.exports = {
       }
       
     },
-    editAuthor: async (_, { name, setBornTo }) => {
+    editAuthor: async (_, { name, setBornTo }, context) => {
+      const currentUser = context.currentUser
+      // Fail if not authorized
+      if (!currentUser) {
+        throw new GraphQLError('not authenticated', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+          }
+        })
+      }
+
       const author = await Author.findOne({ name })
       if (author) {
         author.born = setBornTo
         try {
-          await author.save()
+          const editedAuthor = await author.save()
+          return editedAuthor
         } catch (error) {
           throw new GraphQLError('Editing date failed', {
             extensions: {
@@ -92,5 +118,21 @@ module.exports = {
           })
       }
     },
+    login: async (_, { username, password }) => {
+      const user = await User.findOne({ username })
+
+      if (!user || password !== 'secret') {
+        throw new GraphQLError('wrong credentials', {
+          extensions: { code: 'BAD_USER_INPUT'}
+        })
+      }
+      
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+
+      return { value: jwt.sign(userForToken, process.env.JWT_SECRET)}
+    }
   },
 }
