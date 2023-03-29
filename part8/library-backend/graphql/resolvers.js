@@ -1,6 +1,8 @@
 const Author = require('../models/Author')
 const Book = require('../models/Book')
+const User = require('../models/User')
 const { GraphQLError } = require('graphql')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
   Query: {
@@ -51,8 +53,44 @@ module.exports = {
       }
       
     },
-    editAuthor: (root, args) => {
-      return null
-    }
+    editAuthor: async (_, { name, setBornTo }) => {
+      const author = await Author.findOne({ name })
+      if (author) {
+        author.born = setBornTo
+        try {
+          await author.save()
+        } catch (error) {
+          throw new GraphQLError('Editing date failed', {
+            extensions: {
+              code: 'INTERNAL_SERVER_ERROR',
+              invalidArgs: name,
+              error
+            }
+          })
+        }
+      } else {
+        throw new GraphQLError('date edit failed, invalid author name', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: name,
+          }
+        })
+      }
+    },
+    createUser: async (_, args) => {
+      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre})
+      try {
+        const savedUser = await user.save()
+        return savedUser
+      } catch (error) {
+        throw new GraphQLError('Creating the user failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.username,
+              error
+            }
+          })
+      }
+    },
   },
 }
