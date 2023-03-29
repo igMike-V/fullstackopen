@@ -18,8 +18,16 @@ const schema = new Schema({
     ref: 'Author'
   },
   genres: [
-    { type: String}
+    {type: String}
   ]
+})
+
+schema.set('toJson', {
+  transform: (_, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
 })
 
 schema.plugin(uniqueValidator)

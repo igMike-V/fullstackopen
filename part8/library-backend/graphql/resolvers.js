@@ -1,5 +1,6 @@
 const Author = require('../models/Author')
 const Book = require('../models/Book')
+const { GraphQLError } = require('graphql')
 
 module.exports = {
   Query: {
@@ -20,7 +21,7 @@ module.exports = {
     allAuthors: async () => await Author.find({})
   },
   Mutation: {
-    addBook: async (_, {title, author, published, genres}) => {
+    addBook: async (_, {title, author, published, genres, ...args}) => {
       // check for author
       let authorRef = await Author.findOne({name: author})
       if(!authorRef) {
@@ -40,7 +41,13 @@ module.exports = {
         const savedBook = await book.save()
         return savedBook
       } catch ( error ) {
-        console.log(error)
+        throw new GraphQLError('Saving book failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error
+          }
+        })
       }
       
     },

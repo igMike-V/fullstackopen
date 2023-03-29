@@ -28,4 +28,4 @@ module.exports = `
     ): Book!
     editAuthor(name: String!, setBornTo: Int!): Author
   }
-`
+`;
