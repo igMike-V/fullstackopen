@@ -26,7 +26,7 @@ const NewBook = () => {
     setAuthor('')
     setGenres([])
     setGenre('')
-    navigate('/')
+    navigate('/books')
   }
 
   const addGenre = () => {

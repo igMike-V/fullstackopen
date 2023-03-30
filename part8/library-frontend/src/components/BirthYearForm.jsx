@@ -5,18 +5,18 @@ import { EDIT_BORN, ALL_AUTHORS } from '../queries'
 
 
 const BirthYearForm = ({authors}) => {
-  const [name, setName] = useState('')
+  const [name, setName] = useState(authors[0].name)
   const [born, setBorn] = useState('')
 
   const [changeBorn, result] = useMutation(EDIT_BORN, {
     refetchQueries: [{ query: ALL_AUTHORS }],
     onError: (error) => console.error(error)
   })
+
   const submit = async (event) => {
     event.preventDefault()
     changeBorn({ variables: { setBornTo: parseInt(born), name } })
     setBorn('')
-    setName('')
   }
 
 
@@ -31,7 +31,10 @@ const BirthYearForm = ({authors}) => {
           <select
             name='name'
             value={name}
-            onChange={({ target }) => setName(target.value)}       
+            onChange={({ target }) => {
+              setName(target.value)
+              console.log(target.value)
+            }}       
           >
             {authors.map(a => (
                 <option key={a.name} value={a.name}>{a.name}</option>
