@@ -5,17 +5,25 @@ import LoginForm from './components/LoginForm'
 import Recommend from './components/Recommend.jsx'
 import './App.css'
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { useApolloClient, useQuery } from '@apollo/client'
+import { useState } from 'react'
+import { useApolloClient, useSubscription} from '@apollo/client'
 import { useNavigate } from 'react-router-dom'
+import { BOOK_ADDED, ALL_BOOKS } from './queries.jsx'
 
 const App = () => {
   const [token, setToken] = useState(null)
   const client = useApolloClient()
   const navigate = useNavigate()
 
-  //set token from storage 
-  useEffect(() => {}, [])
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const addedBook = data.data.bookAdded;
+
+      window.alert(
+        `Book ${addedBook.title} by ${addedBook.author.name} added to the database.`
+      )
+    }
+  })
 
   const logout = () => {
     setToken(null)

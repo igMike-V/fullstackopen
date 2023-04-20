@@ -2,14 +2,14 @@ const { ApolloServer } = require('@apollo/server')
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer')
 const { expressMiddleware } = require('@apollo/server/express4')
 const { makeExecutableSchema } = require('@graphql-tools/schema')
-
+const cors = require('cors')
 const { WebSocketServer } = require('ws')
 const { useServer } = require('graphql-ws/lib/use/ws')
 
 const http = require('http')
 const express = require('express')
 
-const cors = require('cors')
+
 const jwt = require('jsonwebtoken')
 
 const User = require('./models/User')
@@ -75,7 +75,7 @@ const start = async () => {
     })
   )
 
-  const PORT = 5001
+  const PORT = 4000
 
   httpServer.listen(PORT, () =>
     console.log(`Server is now running on http://localhost:${PORT}`)
