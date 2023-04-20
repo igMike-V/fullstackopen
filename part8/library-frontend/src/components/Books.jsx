@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { useState } from 'react'
-import { ALL_BOOKS } from '../queries'
+import { BOOK_ADDED, ALL_BOOKS } from '../queries'
+import { useSubscription} from '@apollo/client'
 
 const Genres = ({ setGenre, genre, genreList }) => {
   return (
@@ -11,7 +12,36 @@ const Genres = ({ setGenre, genre, genreList }) => {
     )
 }
 
-const Books = () => {
+// function that takes care of manipulating cache
+export const updateCache = (cache, query, addedBook) => {
+  // helper that is used to eliminate saving same book twice
+  const uniqByName = (a) => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.title
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByName(allBooks.concat(addedBook)),
+    }
+  })
+}
+
+
+const Books = ({ client }) => {
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const addedBook = data.data.bookAdded;
+      console.log(addedBook)
+      //window.alert(`Book ${addedBook.title} by ${addedBook.author.name} added to the database.`)
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
+    }
+  })
+
   const [genre, setGenre] = useState(null)
   const result = useQuery(ALL_BOOKS)
 
@@ -20,6 +50,8 @@ const Books = () => {
   }
   
   const allBooks = result.data.allBooks
+
+  
 
   const genreExtractor = (books) => {
     let genreList = []

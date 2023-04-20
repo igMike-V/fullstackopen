@@ -6,24 +6,13 @@ import Recommend from './components/Recommend.jsx'
 import './App.css'
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import { useState } from 'react'
-import { useApolloClient, useSubscription} from '@apollo/client'
+import { useApolloClient } from '@apollo/client'
 import { useNavigate } from 'react-router-dom'
-import { BOOK_ADDED, ALL_BOOKS } from './queries.jsx'
 
 const App = () => {
   const [token, setToken] = useState(null)
   const client = useApolloClient()
   const navigate = useNavigate()
-
-  useSubscription(BOOK_ADDED, {
-    onData: ({ data }) => {
-      const addedBook = data.data.bookAdded;
-
-      window.alert(
-        `Book ${addedBook.title} by ${addedBook.author.name} added to the database.`
-      )
-    }
-  })
 
   const logout = () => {
     setToken(null)
@@ -54,7 +43,7 @@ const App = () => {
       <Routes>
         <Route path="/" exact element={<Navigate to="/authors" />} />
         <Route path="/authors" element={<Authors />} >Authors</Route>
-        <Route path="/books" element={<Books />} >Books</Route>
+        <Route path="/books" element={<Books client={client} />} >Books</Route>
         <Route path="/add" element={<NewBook />} >Add</Route>
         <Route path="/recommend" element={<Recommend />} >Add</Route>
       </Routes>
