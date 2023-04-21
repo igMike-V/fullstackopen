@@ -1,6 +1,7 @@
 const Author = require('../models/Author')
 const Book = require('../models/Book')
 const User = require('../models/User')
+const { bookCountLoader } = require('../loaders')
 
 const { GraphQLError } = require('graphql')
 const jwt = require('jsonwebtoken')
@@ -8,6 +9,12 @@ const { PubSub } = require(`graphql-subscriptions`)
 const pubsub = new PubSub()
 
 module.exports = {
+  Author: {
+    bookCount: async (parent) => {
+      const books = await bookCountLoader.load(parent._id)
+      return books.length
+    }
+  },
   Query: {
     bookCount: async () => await Book.collection.countDocuments(),
     authorCount: async () => await Author.collection.countDocuments(),
@@ -23,7 +30,9 @@ module.exports = {
       }
       return filteredBooks
     },
-    allAuthors: async () => await Author.find({}),
+    allAuthors: async () => {
+      return await Author.find({})
+    },
     me: (root, args, context) => {
       return context.currentUser
     }

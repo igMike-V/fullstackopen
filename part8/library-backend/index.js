@@ -25,6 +25,8 @@ mongoose.connect(MONGODB_URI)
   .then(() => console.log('connected to MongoDB'))
   .catch( (error) => console.error('Error connecting to MongoDB:', error.message)) 
 
+mongoose.set('debug', true)
+
 const typeDefs = require('./graphql/typeDefs')
 const resolvers = require('./graphql/resolvers')
 
