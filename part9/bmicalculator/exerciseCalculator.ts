@@ -8,12 +8,29 @@ interface IsTrainingResult {
   average: number
 };
 
-const calculateExercises = (dailyHours: number[], target: number): IsTrainingResult  => {
+const args: string[] = process.argv.slice(2)
+
+const calculateExercises = (args: string[]): IsTrainingResult  => {
+
+  if (args.length < 2) throw new Error('Not enough arguments, First argument should be the target hours per day, followed by x days of hours');
+  
+  const target: number = Number(args.shift());
+  if (isNaN(target)) { 
+    throw new Error('First argument was not a number');      
+  }
+
+  const dailyHours: number[] = args.map((dh, index) => {
+    const dayValue = Number(dh);
+    if (isNaN(dayValue)) { 
+      throw new Error(`Argument in position ${index + 1}, is not a number`);      
+    }
+    return dayValue;
+  })
   
   const periodLength: number = dailyHours.length;
   
   // Get the total hours of training along with the number of days of training
-  const filteredDailyHours: number[]  = dailyHours.filter(dh => dh > 0);
+  const filteredDailyHours: number[]  = dailyHours.filter(hour => hour > 0);
   const trainingDays: number = filteredDailyHours.length;
   const totalHours: number = filteredDailyHours.reduce((total, hours) => total + hours, 0)
 
@@ -59,4 +76,4 @@ const calculateExercises = (dailyHours: number[], target: number): IsTrainingRes
   return trainingResult;
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+console.log(calculateExercises(args))
