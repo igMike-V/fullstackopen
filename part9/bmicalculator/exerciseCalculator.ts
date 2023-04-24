@@ -13,14 +13,9 @@ const calculateExercises = (dailyHours: number[], target: number): IsTrainingRes
   const periodLength: number = dailyHours.length;
   
   // Get the total hours of training along with the number of days of training
-  let totalHours: number = 0;
-  const trainingDays: number = dailyHours.reduce((count: number, hours: number) => {
-    if (hours > 0) {
-      totalHours = totalHours + hours;
-      return count + 1;
-    }
-    return count;
-  }, 0);
+  const filteredDailyHours: number[]  = dailyHours.filter(dh => dh > 0);
+  const trainingDays: number = filteredDailyHours.length;
+  const totalHours: number = filteredDailyHours.reduce((total, hours) => total + hours, 0)
 
   const average: number = totalHours / periodLength;
 
