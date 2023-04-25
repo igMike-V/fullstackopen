@@ -25,6 +25,8 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "z_sandbox_non_submitted/flight_diary/",
+    "sourceType": "module"
   }
 }
