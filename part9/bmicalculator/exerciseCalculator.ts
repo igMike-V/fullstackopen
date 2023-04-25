@@ -6,62 +6,69 @@ interface IsTrainingResult {
   ratingDescription: string,
   target: number,
   average: number
-};
+}
 
-const args: string[] = process.argv.slice(2)
+interface IsError {
+  error: string
+}
 
-const calculateExercises = (args: string[]): IsTrainingResult  => {
+export interface IsTrainingInput {
+  daily_exercises: number[],
+  target: number
+}
 
-  if (args.length < 2) throw new Error('Not enough arguments, First argument should be the target hours per day, followed by x days of hours');
-  
-  const target: number = Number(args.shift());
-  if (isNaN(target)) { 
-    throw new Error('First argument was not a number');      
+export const calculateExercises = (trainingInput: IsTrainingInput): IsTrainingResult | IsError => {
+  const target: number = trainingInput.target;
+  if (isNaN(target)) {
+    return { error: "malformatted parameters" };
   }
-
-  const dailyHours: number[] = args.map((dh, index) => {
+  let errorCheck = false;
+  const dailyHours: number[] = trainingInput.daily_exercises.map((dh) => {
     const dayValue = Number(dh);
-    if (isNaN(dayValue)) { 
-      throw new Error(`Argument in position ${index + 1}, is not a number`);      
+    if (isNaN(dayValue)) {
+      errorCheck = true;
     }
     return dayValue;
-  })
+  });
+
+  if (errorCheck) {
+    return { error: "malformatted parameters" };
+  }
   
   const periodLength: number = dailyHours.length;
   
   // Get the total hours of training along with the number of days of training
-  const filteredDailyHours: number[]  = dailyHours.filter(hour => hour > 0);
+  const filteredDailyHours: number[] = dailyHours.filter(hour => hour > 0);
   const trainingDays: number = filteredDailyHours.length;
-  const totalHours: number = filteredDailyHours.reduce((total, hours) => total + hours, 0)
+  const totalHours: number = filteredDailyHours.reduce((total, hours) => total + hours, 0);
 
   const average: number = totalHours / periodLength;
 
   const getRating = (averageDailyHours: number, target: number): number => {
-
     // greater then target
     if (averageDailyHours >= target) {
       return 3;
     }
     if (averageDailyHours < (target - target / 3)) {
-      return 1
+      return 1;
     }
-    return 2
-  }
+    return 2;
+  };
 
   const getRatingDescription = (value: number): string => {
-    let message = "Amazing you met your target!";
+    let message = "good";
     if (value === 1) {
-      message = "not great, lets get a couple more hours in next time.";
+      message = "bad";
     }
     if (value === 2) {
       message = "not too bad but could be better";
     }
     return message;
-  }
+  };
 
   const rating: number = getRating(average, target);
 
-  let success = average < target ? false : true;
+  const success = average < target ? false : true;
 
   const trainingResult: IsTrainingResult = {
     periodLength,
@@ -74,6 +81,4 @@ const calculateExercises = (args: string[]): IsTrainingResult  => {
   };
 
   return trainingResult;
-}
-
-console.log(calculateExercises(args))
+};
