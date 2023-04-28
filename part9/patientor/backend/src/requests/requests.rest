@@ -1,3 +1,15 @@
 ### GetAll
-
 GET http://localhost:3001/api/diagnoses
+
+
+### POST
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "Mike",
+    "dateOfBirth": "1980-01-01",
+    "ssn": "5545646213",
+    "gender": "Male",
+    "occupation": "Dev"
+}

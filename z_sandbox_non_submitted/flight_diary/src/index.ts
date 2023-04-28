@@ -13,5 +13,5 @@ app.get('/ping', (_req, res) => {
 app.use('/api/diaries', diaryRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port: ${PORT} - http://localhost:${PORT}/`)
+  console.log(`Server is running on port: ${PORT} - http://localhost:${PORT}/`);
 });
