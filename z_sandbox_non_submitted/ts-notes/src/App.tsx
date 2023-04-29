@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface Note {
+  id: number,
+  content: string
 }
 
-export default App;
+import { useState } from 'react';
+
+const App = () => {
+  const [notes, setNotes] = useState<Note[]>([
+    { id: 1, content: 'testing'}
+  ]);
+  
+  const [newNote, setNewNote] = useState('');
+
+  const noteCreation = (event: React.SyntheticEvent) => {
+    event.preventDefault()
+    const noteToAdd = {
+      content: newNote,
+      id: notes.length + 1
+    }
+    setNotes(notes.concat(noteToAdd));
+    setNewNote('')
+  };
+
+  return (
+    <div>
+      <form onSubmit={noteCreation}>
+        <input
+          value={newNote}
+          onChange={(event) => setNewNote(event.target.value)} 
+        />
+        <button type='submit'>add</button>
+      </form>
+      <ul>
+        {notes.map(note =>
+          <li key={note.id}>{note.content}</li>  
+        )}
+      </ul>
+    </div>
+  )
+}
+
+export default App
