@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { NewDiaryEntry, NonSensitiveDiaryEntry } from "../interfaces";
 import { createEntry } from "../services/diaryService";
+import axios from 'axios';
 
 interface DiaryFormProps {
   entries: NonSensitiveDiaryEntry[];
   setEntries: React.Dispatch<React.SetStateAction<NonSensitiveDiaryEntry[]>>;
+  setMessage: (value: string) => void;
 }
 
 const resetDiaryForm = ():NewDiaryEntry => {
@@ -19,13 +21,23 @@ const resetDiaryForm = ():NewDiaryEntry => {
 const DiaryForm = (props:DiaryFormProps) => {
   const [formData, setFormData] = useState<NewDiaryEntry>(resetDiaryForm());
   
-  const createDiaryEntry = (event: React.SyntheticEvent) => {
+  const createDiaryEntry = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    createEntry(formData).then(res => {
-      const newEntries: NonSensitiveDiaryEntry[] = [...props.entries, res];
-      props.setEntries(newEntries);
-    }).catch(error => console.log(error))
-
+    try {
+      const newEntry = await createEntry(formData)
+      if (newEntry) {
+        const newEntryState = [...props.entries, newEntry];
+        props.setEntries(newEntryState);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          props.setMessage(error.response.data)
+        }         
+      } else {
+        props.setMessage('Oops... Something went wrong try again.')
+      }
+    }
   }
 
   const updateForm = (event: React.ChangeEvent<HTMLInputElement>) => {

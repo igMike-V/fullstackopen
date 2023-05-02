@@ -6,7 +6,13 @@ interface DiaryEntryProps {
 }
 
 const DiaryEntries = (props:DiaryEntryProps) => {
-  console.log(props);
+  if (!props.diaryEntries) {
+    return (
+      <section className="diary-entries">
+        Loading entries...
+      </section>
+    )
+  }
   return (
     <section className="diary-entries">
        { props.diaryEntries.map(entry => <Entry key={entry.id} diaryEntry={entry} />) }; 

@@ -1,0 +1,18 @@
+.notification p {
+  color: red;
+}
+
+.diary-entry {
+  display: flex;
+  flex-direction: column;
+  gap: .25em
+}
+
+.entry-detail, .diary-entry h3{
+  padding: 0;
+  margin: 0;
+}
+
+.diary-entry {
+  padding: .75em 0;
+}

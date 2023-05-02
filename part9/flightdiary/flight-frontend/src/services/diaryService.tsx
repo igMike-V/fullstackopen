@@ -1,16 +1,16 @@
 import axios from "axios";
-import { DiaryEntry, NewDiaryEntry } from "../interfaces";
+import { NewDiaryEntry, NonSensitiveDiaryEntry } from "../interfaces";
 
 const baseUrl = 'http://localhost:3000/api/diaries';
 
-export const getAllEntries = () => {
-  return axios
-    .get<DiaryEntry[]>(baseUrl)
-    .then(res => res.data)
+export const getAllEntries = async () => {
+    const response = await axios.get<NonSensitiveDiaryEntry[]>(baseUrl);
+    return response.data;
 }
 
-export const createEntry = (object: NewDiaryEntry) => {
-  return axios
-    .post<DiaryEntry>(baseUrl, object)
-    .then(res => res.data)
+export const createEntry = async (newDiaryEntry: NewDiaryEntry) => {
+  const response = await axios.post(baseUrl, newDiaryEntry);
+  if (response) {
+    return response.data;
+  }
 }
