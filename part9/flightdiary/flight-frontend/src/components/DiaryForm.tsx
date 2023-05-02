@@ -41,7 +41,8 @@ const DiaryForm = (props:DiaryFormProps) => {
   }
 
   const updateForm = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({...formData, [event.currentTarget.name]: event.currentTarget.value})
+    setFormData({ ...formData, [event.currentTarget.name]: event.currentTarget.value })
+    console.log(formData)
   }
 
   return (
@@ -50,27 +51,133 @@ const DiaryForm = (props:DiaryFormProps) => {
         <div className="form-input">
           <label>date:</label>
           <input
+            type="date"
             name="date"
             value={formData.date}
-            onChange={(event) => updateForm(event)} 
+            onChange={updateForm} 
           />
         </div>
+
         <div className="form-input">
-          <label>visibility:</label>
-          <input
-            name="visibility"
-            value={formData.visibility}
-            onChange={(event) => updateForm(event)} 
-          />
+          <label>Weather</label>
+          <div className="radio-buttons">
+            <div className="radio">
+              <input
+                type="radio"
+                name="weather"
+                value="sunny"
+                id="sunny"
+                checked={formData.weather === 'sunny'}
+                onChange={updateForm} 
+              />
+              <label htmlFor="sunny">Sunny</label>
+            </div>
+            
+            <div className="radio">
+              <input
+                type="radio"
+                name="weather"
+                value="rainy"
+                id="rainy"
+                checked={formData.weather === 'rainy'}
+                onChange={updateForm} 
+              />
+              <label htmlFor="rainy">Rainy</label>
+            </div>
+
+            <div className="radio">
+              <input
+                type="radio"
+                name="weather"
+                value="cloudy"
+                id="cloudy"
+                checked={formData.weather === 'cloudy'}
+                onChange={updateForm} 
+              />
+              <label htmlFor="cloudy">Cloudy</label>
+            </div>
+            
+            <div className="radio">
+              <input
+                type="radio"
+                name="weather"
+                value="stormy"
+                id="stormy"
+                checked={formData.weather === 'stormy'}
+                onChange={updateForm} 
+              />
+              <label htmlFor="stormy">Stormy</label>
+            </div>
+            
+            <div className="radio">
+              <input
+                type="radio"
+                name="weather"
+                value="windy"
+                id="windy"
+                checked={formData.weather === 'windy'}
+                onChange={updateForm} 
+              />
+              <label htmlFor="windy">Windy</label>
+            </div>
+
+          </div>
         </div>
+
         <div className="form-input">
-          <label>weather:</label>
-          <input
-            name="weather"
-            value={formData.weather}
-            onChange={(event) => updateForm(event)} 
-          />
+          <label>Visibility:</label>
+          <div className="radio-buttons">
+            <div className="radio">
+              <input
+                type="radio"
+                name="visibility"
+                value="great"
+                id="great"
+                checked={formData.visibility === 'great'}
+                onChange={updateForm} 
+              />
+              <label htmlFor="great">Great</label>
+            </div>
+            
+            <div className="radio">
+              <input
+                type="radio"
+                name="visibility"
+                value="good"
+                id="good"
+                checked={formData.visibility === 'good'}
+                onChange={updateForm} 
+              />
+              <label htmlFor="good">Good</label>
+            </div>
+
+            <div className="radio">
+              <input
+                type="radio"
+                name="visibility"
+                value="ok"
+                id="ok"
+                checked={formData.visibility === 'ok'}
+                onChange={updateForm} 
+              />
+              <label htmlFor="ok">ok</label>
+            </div>
+            
+            <div className="radio">
+              <input
+                type="radio"
+                name="visibility"
+                value="poor"
+                id="poor"
+                checked={formData.visibility === 'poor'}
+                onChange={updateForm} 
+              />
+              <label htmlFor="poor">Poor</label>
+            </div>
+          </div>
+          
         </div>
+
         <div className="form-input">
           <label>comment:</label>
           <input
