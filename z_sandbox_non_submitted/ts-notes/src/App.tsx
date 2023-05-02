@@ -8,7 +8,7 @@ const App = () => {
   const [newNote, setNewNote] = useState('');
 
   useEffect(() => {
-    getAllNotes().then(data => {
+    getAllNotes().then((data: Note[]) => {
       setNotes(data)
     })
   }, [])
