@@ -1,48 +1,24 @@
-import { Diagnosis, Entry } from "../../types";
+import { Entry } from "../../types";
+import HealthCheckEntrySection from "./HealthCheckEntrySection";
+import HospitalEntrySection from "./HospitalEntrySection";
+import OccupationalHealthEntrySection from "./OccupationalHealthEntrySection";
+import { assertNever } from "../../utils";
 
 interface Props {
   entry: Entry;
-  diagnoses: Diagnosis[];
 }
 
-const SingleEntry = ({ entry, diagnoses }: Props) => {
-  console.log(diagnoses)
-
-  const getDiagnosesCodes = (): JSX.Element | null => {
-    if (!entry.diagnosisCodes) {
-      return null;
-    }
-    const elements = entry.diagnosisCodes.map(code => {
-      let diagnosis = diagnoses.find(d => d.code === code);
-      if (diagnosis) {
-        
-        return (
-          <li key={code}>{code} {diagnosis.name}</li>
-        )
-      } else {
-        return (
-          <li key={code}>{code} No matching diagnosis for code.</li>
-        )
-      }
-      
-    });
-
-    return (
-      <ul>{elements}</ul>
-    ) 
-    
+const SingleEntry = ({ entry }: Props) => {
+  switch (entry.type) {
+    case "Hospital":
+      return <HospitalEntrySection entry={entry} />
+    case "OccupationalHealthcare":
+      return <OccupationalHealthEntrySection entry={entry} />
+    case "HealthCheck":
+      return <HealthCheckEntrySection entry={entry} />
+    default:
+      return assertNever(entry)
   }
-
-  return (
-    <div className="single-entry">
-      <p className="single-entry--description">
-        {entry.date} {entry.description}
-      </p>
-      <div className="single-entry--codes">
-        {getDiagnosesCodes()}
-      </div>
-    </div>
-  )
 }
 
 export default SingleEntry;

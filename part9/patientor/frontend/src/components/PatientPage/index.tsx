@@ -1,15 +1,11 @@
 import  patientService  from '../../services/patients'
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Diagnosis, Patient } from '../../types';
+import { Patient } from '../../types';
 import Entries from './Entries';
 import './index.css';
 
-interface Props {
-  diagnoses: Diagnosis[];
-}
-
-const PatientPage = ({ diagnoses }: Props) => {
+const PatientPage = () => {
   const [patient, setPatient] = useState<Patient>();
   const patientId = useParams<string>().id;
   console.log(patientId);
@@ -52,7 +48,7 @@ const PatientPage = ({ diagnoses }: Props) => {
           <p className="ssn">ssn: {patient.ssn}</p>
           <p className="occupation">occupation: {patient.occupation}</p>
         </div>
-        <Entries entries={patient.entries} diagnoses={diagnoses} />
+        <Entries entries={patient.entries} />
       </div>
     )
   } else {

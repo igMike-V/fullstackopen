@@ -10,7 +10,14 @@ const getAll = async () => {
   return data;
 };
 
+const getByCode = async (code: string) => {
+  const { data } = await axios.get<Diagnosis>(
+    `${apiBaseUrl}/diagnoses/${code}`
+  );
+  return data;
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  getAll
+  getAll, getByCode
 };

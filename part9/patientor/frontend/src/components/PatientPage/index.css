@@ -6,7 +6,59 @@
   justify-content: flex-start;
 }
 
+.patient-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
 .patient-info p{
   padding: 0;
   margin: 0;
+}
+
+.single-entry {
+  display: flex;
+  flex-direction: row;
+  border: solid 2px #1976d2;
+  border-radius: .5em;
+}
+
+.single-entry h4, .single-entry h3,.single-entry ul {
+  margin: 0;
+}
+
+.single-entry--icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #1976d2;
+  padding: 1em;
+  color: white;
+  font-size: .75em;
+  gap: .25em;
+  min-width: 10%;
+}
+
+.single-entry-occupational {
+  border-color: #7c19d2;
+}
+.single-entry--icon-occupational{
+  background-color: #7c19d2;
+}
+
+.single-entry-healthcheck {
+  border-color: #d21928;
+}
+
+.single-entry--icon-healthcheck{
+  background-color: #d21928;
+}
+
+.single-entry--content {
+  display: flex;
+  flex-direction: column;
+  gap:1em;
+  padding: 1em;
 }
