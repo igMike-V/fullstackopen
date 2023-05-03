@@ -1,17 +1,18 @@
-import { Entry } from "../../types"
-import Single from './Single';
+import { Diagnosis, Entry } from "../../types"
+import SingleEntry from './SingleEntry';
 
 interface Props {
-  entries: Entry[]
+  entries: Entry[];
+  diagnoses: Diagnosis[];
 }
 
-const Entries = ({ entries }: Props) => {
-  if (!entries) return <>'No entries yet'</>;
+const Entries = ({ entries, diagnoses }: Props) => {
+  if (entries.length === 0) return <h3>No entries found</h3>;
   
   return (
     <div className="patient-entries">
       <h3>entries</h3>
-      {entries.map(entry => <Single key={entry.id} entry={entry} />)}
+      {entries.map(entry => <SingleEntry key={entry.id} entry={entry} diagnoses={diagnoses} />)}
     </div>
   )
 

@@ -1,13 +1,17 @@
 import  patientService  from '../../services/patients'
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Patient } from '../../types';
+import { Diagnosis, Patient } from '../../types';
 import Entries from './Entries';
-import './index.css'
+import './index.css';
 
-const PatientPage = () => {
+interface Props {
+  diagnoses: Diagnosis[];
+}
+
+const PatientPage = ({ diagnoses }: Props) => {
   const [patient, setPatient] = useState<Patient>();
-  const patientId = useParams<string>().id; 
+  const patientId = useParams<string>().id;
   console.log(patientId);
   
   useEffect(() => {
@@ -26,13 +30,15 @@ const PatientPage = () => {
 
   if (!patientId) {
     return (<div>No Patient info, go back and try again.</div>);
-  }
+  };
+
   if (!patient) {
     setTimeout(() => {
       if (!patient)
-        return <div>{ `Loading patient: ${patientId}...` }</div>
-     }, 1000)
-  }
+        return <div>{`Loading patient: ${patientId}...`}</div>
+    }, 1000)
+  };
+  
   console.log(patient)
   if (patient) {
     return (
@@ -46,12 +52,12 @@ const PatientPage = () => {
           <p className="ssn">ssn: {patient.ssn}</p>
           <p className="occupation">occupation: {patient.occupation}</p>
         </div>
-        <Entries entries={patient.entries} />
+        <Entries entries={patient.entries} diagnoses={diagnoses} />
       </div>
     )
   } else {
-     return <div>{ `Loading patient: ${patientId}...` }</div>
-  }
-}
+    return <div>{`Loading patient: ${patientId}...`}</div>
+  };
+};
 
 export default PatientPage;
