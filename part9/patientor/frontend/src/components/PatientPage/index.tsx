@@ -2,6 +2,7 @@ import  patientService  from '../../services/patients'
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Patient } from '../../types';
+import Entries from './Entries';
 import './index.css'
 
 const PatientPage = () => {
@@ -45,6 +46,7 @@ const PatientPage = () => {
           <p className="ssn">ssn: {patient.ssn}</p>
           <p className="occupation">occupation: {patient.occupation}</p>
         </div>
+        <Entries entries={patient.entries} />
       </div>
     )
   } else {
