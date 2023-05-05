@@ -22,3 +22,15 @@ Content-Type: application/json
     "gender": "Male",
     "occupation": "Dev"
 }
+
+### ADD ENTRY
+POST http://localhost:3001/api/patients/d2773822-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+    "date": "2019-05-01",
+    "specialist": "Dr Byte House",
+    "type": "HealthCheck",
+    "description": "Digital overdose, very bytestatic. Otherwise healthy.",
+    "healthCheckRating": 0
+}
