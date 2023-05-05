@@ -1,6 +1,7 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import toNewPatientEntry from '../utils';
+import { EntryWithoutId, Patient } from '../types';
+import { toNewPatientEntry, toNewEntry } from '../utils';
 
 const router = express.Router();
 
@@ -26,6 +27,23 @@ router.post('/', (req, res) => {
     let errorMessage = 'Something went wrong';
     if (error instanceof Error) {
       errorMessage += `Error: ${error.message}`
+    }
+    res.status(400).send(errorMessage);
+  }
+});
+
+router.post('/:id/entries', (req, res) => {
+
+  //TODO Add an entry to a patient
+  const patientId = req.params.id
+  const newEntry: EntryWithoutId = toNewEntry(req.body);
+  try {
+    const updatedPatient: Patient | undefined = patientService.addEntry(patientId, newEntry);
+    res.json(updatedPatient);
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong';
+    if (error instanceof Error) {
+      errorMessage += ` Error: ${error.message}`
     }
     res.status(400).send(errorMessage);
   }
