@@ -9,6 +9,7 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Button
 } from "@mui/material";
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -16,7 +17,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from "@mui/x-date-pickers";
 import Switch from '@mui/joy/Switch';
 import Typography from '@mui/joy/Typography';
-import { HealthCheckRating} from '../../types';
+import { HealthCheckRating, EntryWithoutId, Diagnosis} from '../../types';
 import dayjs, { Dayjs } from 'dayjs';
 dayjs().format()
 
@@ -89,8 +90,37 @@ const EntryForm = ({ formType }: EntryFormProps) => {
     const month = (date.month() + 1).toString().padStart(2, '0');
     const day = date.date().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
-
   } 
+  
+  const extractDiagnosisCodes =(codes: DiagnosisLookup[]): string[] | undefined => {
+    if (codes === undefined || codes.length === 0) {
+      return undefined
+    }
+    const mapCodes = codes.map(c => {
+      return c.id;
+    })
+    return mapCodes
+  }
+
+  const transformForm = (obj: FormValues): EntryWithoutId => {
+    switch (formType) {
+      case 'health': {
+        const healthEntry: EntryWithoutId = {
+          description: obj.description,
+          date: dateToString(obj.date),
+          specialist: obj.specialist,
+          diagnosisCodes: extractDiagnosisCodes(obj.diagnosisCodes)
+        }
+      } 
+    }
+  }
+  const cancelForm = () => {
+    console.log('form reset');
+  }
+
+  const handleSubmit = () => { 
+    console.log(transformForm(form))
+  }
 
   if (formType === null) {
     return null;
@@ -163,7 +193,7 @@ const EntryForm = ({ formType }: EntryFormProps) => {
           </div>
         }
         {formType === 'occupational' &&
-          <div className="form-occupational">
+          <div className="form-occupational sub-form">
             <div className="form-row">
               <TextField
                 label="Employer Name"
@@ -258,7 +288,16 @@ const EntryForm = ({ formType }: EntryFormProps) => {
             </div>
           </div>
         }
+        <div className="form-row">
+          <Button color="error" onClick={() => cancelForm()} variant="contained" >
+              Cancel
+          </Button>
+          <Button onClick={() => handleSubmit()} variant="contained" >
+              Submit
+          </Button>
+        </div>
       </div>     
+
     </LocalizationProvider>
   );
 }

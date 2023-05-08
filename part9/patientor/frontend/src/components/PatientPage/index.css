@@ -85,3 +85,9 @@
   justify-content: space-between;
   gap: 1em;
 }
+
+.new-entry-form, .sub-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
