@@ -6,6 +6,21 @@
   justify-content: flex-start;
 }
 
+.patient-entries--buttons{
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
+}
+.form-type-buttons{
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
+}
+.patient-entries--buttons{
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
+}
 .patient-entries {
   display: flex;
   flex-direction: column;
@@ -61,4 +76,12 @@
   flex-direction: column;
   gap:1em;
   padding: 1em;
+}
+
+.form-row, .form-section{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
 }

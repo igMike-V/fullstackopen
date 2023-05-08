@@ -21,7 +21,6 @@ const HealthRating = ({ rating }: HealthRatingProps) => {
       {hearts.map(k => {
         
         thekey = thekey - 1;
-        console.log('heart', thekey, rating)
         if (thekey < rating) {
           return (
             <FavoriteBorderIcon key={thekey} style={{ color: 'red' }} />

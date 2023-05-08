@@ -2,5 +2,9 @@
     "editor.detectIndentation": true,
     "editor.tabSize": 2,
     "files.eol": "\n",
-    "cSpell.language": "en,en-GB"
+    "cSpell.language": "en,en-GB",
+    "cSpell.words": [
+        "healthcheck",
+        "thekey"
+    ]
 }
