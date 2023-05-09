@@ -26,8 +26,8 @@ const create = async (object: PatientFormValues) => {
 };
 
 const createEntry = async (id: string, object: EntryWithoutId) => {
-  const { data } = await axios.post<Entry>(
-    `${apiBaseUrl}/patients/${id}`,
+  const { data } = await axios.post<Patient>(
+    `${apiBaseUrl}/patients/${id}/entries`,
     object
   );
   return data;
@@ -35,6 +35,6 @@ const createEntry = async (id: string, object: EntryWithoutId) => {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  getAll, create, getPatient
+  getAll, create, getPatient, createEntry
 };
 

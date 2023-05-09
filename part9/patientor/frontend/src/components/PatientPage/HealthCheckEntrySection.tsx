@@ -3,6 +3,7 @@ import { HealthCheckEntry } from "../../types";
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Diagnosis from "./Diagnosis";
 
 interface Props {
   entry: HealthCheckEntry;
@@ -48,6 +49,9 @@ const HealthCheckEntrySection = ({ entry }: Props) => {
       <div className="single-entry--content">
         <div className="single-entry--description">
           {entry.description}
+        </div>
+        <div className="single-entry--diagnosis">
+          {entry.diagnosisCodes && entry.diagnosisCodes.length !== 0 ? <Diagnosis entry={entry}/> : 'No current Diagnosis'}
         </div>
         <div className="single-entry--rating">
           {<HealthRating rating={entry.healthCheckRating} />}

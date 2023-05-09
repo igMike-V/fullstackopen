@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import diagnosesService from "../../services/diagnoses";
 import { FormType } from ".";
+import patientService from '../../services/patients'
 import {
   Autocomplete,
   FormControl,
@@ -11,18 +12,30 @@ import {
   TextField,
   Button
 } from "@mui/material";
-
+import Alert from '@mui/material/Alert';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from "@mui/x-date-pickers";
 import Switch from '@mui/joy/Switch';
 import Typography from '@mui/joy/Typography';
-import { HealthCheckRating, EntryWithoutId, Diagnosis} from '../../types';
+import {
+  HealthCheckRating,
+  EntryWithoutId,
+  HealthCheckEntryWithoutId,
+  HospitalEntryWithoutId,
+  BaseEntryWithoutId,
+  OccupationalHealthcareEntryWithoutId,
+  Patient,
+  Entry
+} from '../../types';
 import dayjs, { Dayjs } from 'dayjs';
 dayjs().format()
 
 interface EntryFormProps{
   formType: FormType;
+  patientId: string;
+  patient: Patient;
+  setPatient: React.Dispatch<React.SetStateAction<Patient | undefined>>;
 }
 
 interface FormValues {
@@ -50,8 +63,12 @@ interface DiagnosisLookup {
   id: string;
 }
 
-const EntryForm = ({ formType }: EntryFormProps) => {
+const EntryForm = ({ formType, patientId, patient, setPatient }: EntryFormProps) => {
   const [codes, setCodes] = useState<DiagnosisLookup[]>([])
+  const [alert, setAlert] = useState({
+    message: '',
+    type: 'info'
+  });
 
   useEffect(() => {
     const getCodes = async () => {
@@ -65,8 +82,8 @@ const EntryForm = ({ formType }: EntryFormProps) => {
     }
     getCodes(); 
   }, [])
-   
-  const [form, setForm] = useState<FormValues>({
+
+  const formReset = {
     description: '',
     date: dayjs(),
     specialist: '',
@@ -76,7 +93,9 @@ const EntryForm = ({ formType }: EntryFormProps) => {
     assignLeave: false,
     sickLeave: {startDate: dayjs(), endDate: dayjs()},
     discharge: { date: dayjs(), criteria: ""}
-  })
+  }
+   
+  const [form, setForm] = useState<FormValues>(formReset)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({...form, [e.target.name]: e.target.value})
@@ -90,9 +109,18 @@ const EntryForm = ({ formType }: EntryFormProps) => {
     const month = (date.month() + 1).toString().padStart(2, '0');
     const day = date.date().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
-  } 
-  
-  const extractDiagnosisCodes =(codes: DiagnosisLookup[]): string[] | undefined => {
+  }
+
+  const isString = (text: unknown): text is string => {
+    return typeof text === 'string' || text instanceof String;
+  };
+  const parseStringType = (entry: unknown, label: string): string => {
+  if (!isString(entry)) {
+    throw new Error(`Incorrect or missing ${label}: ${entry}`);
+  };
+  return entry;
+}
+  const extractDiagnosisCodes =(codes: DiagnosisLookup[] | undefined): string[] | undefined => {
     if (codes === undefined || codes.length === 0) {
       return undefined
     }
@@ -103,23 +131,77 @@ const EntryForm = ({ formType }: EntryFormProps) => {
   }
 
   const transformForm = (obj: FormValues): EntryWithoutId => {
-    switch (formType) {
-      case 'health': {
-        const healthEntry: EntryWithoutId = {
-          description: obj.description,
-          date: dateToString(obj.date),
-          specialist: obj.specialist,
-          diagnosisCodes: extractDiagnosisCodes(obj.diagnosisCodes)
-        }
-      } 
+    const baseEntry: BaseEntryWithoutId = {
+      description: obj.description,
+      date: dateToString(obj.date),
+      specialist: obj.specialist,
+      diagnosisCodes: extractDiagnosisCodes(obj.diagnosisCodes),
     }
+    
+    switch (formType) {
+      case 'health':
+        if (!obj.healthCheckRating) {
+          throw Error('must supply healthCheckRating')
+        }
+        const healthEntry: HealthCheckEntryWithoutId = {
+          ...baseEntry,
+          type: "HealthCheck",
+          healthCheckRating: obj.healthCheckRating
+        }
+        return healthEntry;
+      
+      case 'hospital':
+        const hospitalEntry: HospitalEntryWithoutId = {
+          ...baseEntry,
+          type: "Hospital",
+          discharge: {
+            date: dateToString(obj.discharge.date),
+            criteria: obj.discharge.criteria
+          },
+        };
+        return hospitalEntry;
+      case 'occupational':
+        const occupationalEntry: OccupationalHealthcareEntryWithoutId = {
+          ...baseEntry,
+          type: "OccupationalHealthcare",
+          employerName: parseStringType(obj.employerName, 'employer name'),
+
+        };
+        if (obj.assignLeave && obj.sickLeave.startDate && obj.sickLeave.endDate) {
+          occupationalEntry.sickLeave = {
+            startDate: dateToString(obj.sickLeave.startDate),
+            endDate: dateToString(obj.sickLeave.endDate)
+          };
+        }
+        return occupationalEntry;
+    }
+    throw Error('Missing fields')
   }
   const cancelForm = () => {
     console.log('form reset');
   }
 
-  const handleSubmit = () => { 
-    console.log(transformForm(form))
+  const handleSubmit = async () => { 
+    try {
+      const newEntry = transformForm(form)
+      const updatedPatientWithEntry: Patient = await patientService.createEntry(patientId, newEntry)
+      setPatient(updatedPatientWithEntry)
+      setAlert({message: `Added a new ${newEntry.type}`, type: 'info'})
+       setTimeout(() => {
+         setAlert({message: '', type: 'error' })
+       }, 3000)
+
+    } catch (error: any) {
+     if (error instanceof Error) { // make sure it's an Error object
+       console.log(error.message)
+       setAlert({message: error.message, type: 'error'})
+       setTimeout(() => {
+         setAlert({message: '', type: 'error' })
+       }, 3000)
+      } else {
+        console.log(error)
+      }
+    }
   }
 
   if (formType === null) {
@@ -128,6 +210,8 @@ const EntryForm = ({ formType }: EntryFormProps) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+      {alert.message && alert.type === 'error' && <Alert variant="filled" severity="error">{alert.message}</Alert> }
+      {alert.message && alert.type === 'info' && <Alert variant="filled" severity="info">{alert.message}</Alert> }
       {formType === 'hospital' && <h3>New Hospital Record</h3>}
       {formType === 'occupational' && <h3>New Occupational Health Record</h3>}
       {formType === 'health' && <h3>New Healthcheck Record</h3>}

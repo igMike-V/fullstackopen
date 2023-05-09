@@ -121,7 +121,7 @@ const PatientPage = () => {
             </div>
           } 
         </div>
-        <EntryForm formType={formSettings.type} />
+        <EntryForm formType={formSettings.type} patientId={patientId} patient={patient} setPatient={setPatient} />
         <Entries entries={patient.entries} />
       </div>
     )

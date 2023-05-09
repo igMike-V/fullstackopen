@@ -1,7 +1,7 @@
 
 import { HospitalEntry, Discharge } from "../../types";
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import Diagnoses from "./Diagnosis";
+import Diagnosis from "./Diagnosis";
 
 interface Props {
   entry: HospitalEntry;
@@ -34,7 +34,7 @@ const HospitalEntrySection = ({ entry }: Props) => {
           {entry.description}
         </div>
         <div className="single-entry--diagnosis">
-          {entry.diagnosisCodes && entry.diagnosisCodes.length !== 0 ? <Diagnoses entry={entry}/> : 'No current Diagnosis'}
+          {entry.diagnosisCodes && entry.diagnosisCodes.length !== 0 ? <Diagnosis entry={entry}/> : 'No current Diagnosis'}
         </div>
 
         {entry.discharge && <DischargeSection discharge={entry.discharge} />}
